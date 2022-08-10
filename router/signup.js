@@ -3,7 +3,7 @@ const express = require("express");
 
 const router = express.Router({ mergeParams: true });
 const DB_auth = require("../database/dbauthapi");
-// const DB_Buyer = require("../Database/DB-buyer-api");
+ const DB = require("../database/dbHome");
 // const DB_Seller = require("../Database/DB-seller-api");
 const { count } = require("console");
 
@@ -11,7 +11,7 @@ const { count } = require("console");
 //let person_id;
 //let USER_NAME = null;
 
-router.get("/", (req, res) => {
+router.get("/signup", (req, res) => {
   res.render("signup.ejs");
 });
 
@@ -37,11 +37,14 @@ router.post("/homeafterlogin", async (req, res) => {
       };
     console.log(user.username);
     DB_auth.insertAccountIntoDB(user.playername,user.email,user.username,user.password)
+    let resultss = await DB.allgames()
         res.render("homeafterlogin.ejs", {
+          AllGames : resultss
         }
         
       );
       
   });
+
 
   module.exports = router;

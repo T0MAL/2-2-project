@@ -8,7 +8,7 @@ const morgan = require('morgan');
 // const auth = require('./middlewares/auth').auth;
 
 // router
-const router = require('./router/home');
+const router = require('./router/login');
 // const adminRouter = require('./router/adminIndexRouter');
 // const sellerRouter = require('./router/sellerRouter');
 // app creation

@@ -27,7 +27,7 @@ async function insertAccountIntoDB(player_name,user_name,email,password) {
         player_name : player_name,
         email : email
     }
-    return (await database.execute(sql, [player_name,user_name,email,password], database.options))
+    return (await database.execute(sql,binds, database.options))
 }
 module.exports = {
     getPassfromDB,

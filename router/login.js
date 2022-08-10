@@ -3,7 +3,7 @@ const express = require("express");
 
 const router = express.Router({ mergeParams: true });
 const DB_auth = require("../database/dbauthapi");
-// const DB_Buyer = require("../Database/DB-buyer-api");
+ const DB = require("../database/dbHome");
 // const DB_Seller = require("../Database/DB-seller-api");
 const { count } = require("console");
 
@@ -40,13 +40,16 @@ router.post("/homeafterlogin", async (req, res) => {
   
       results = await DB_auth.getPassfromDB(username)
 
+      let pass_db
+      if(results.length>0){
+        pass_db = results[0].PWD;
+      }
       
-  
-      let pass_db = results[0].PWD;
-      console.log(pass_db);
+      //console.log(pass_db);
+      let resultss = await DB.allgames()
       if (password === pass_db) {
         res.render("homeafterlogin.ejs", {
-          user : username
+          AllGames : resultss
         }
         
       );
@@ -57,7 +60,7 @@ router.post("/homeafterlogin", async (req, res) => {
       }
   });
 
-  router.post("/signup", async (req, res) => {
+  router.get("/signup", async (req, res) => {
     res.render("signup.ejs");
   });
 
