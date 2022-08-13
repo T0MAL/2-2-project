@@ -11,19 +11,30 @@ const { count } = require("console");
 
 router.get("/",async (req, res) => {
     results = await DB.allgames()
-    console.log(results);
+    //console.log(results);
+    let username = "Not logged in"
   res.render("homeafterlogin.ejs", {
-    AllGames : results
+    AllGames : results,
+    username : username
   })
 });
 
-router.post("/homeafterlogin", async (req, res) => {
-    results = await DB.allgames()
-    console.log(results);
-    res.render("homeafterlogin.ejs", {
-        AllGames : results
-      })
-    
+  router.get("/login", (req, res) => {
+    res.render("login.ejs");
+  });
+
+  router.get("/signup", async (req, res) => {
+    res.render("signup.ejs");
+  });
+
+  router.post("/profile", async (req, res) => {
+    let username = req.body.username;
+   // console.log(username)
+    let user= await DB.playeDetails(username)
+    console.log(user)
+    res.render("profile.ejs",{
+      user : user
+    })
   });
 
   module.exports = router;

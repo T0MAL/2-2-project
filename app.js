@@ -8,7 +8,14 @@ const morgan = require('morgan');
 // const auth = require('./middlewares/auth').auth;
 
 // router
-const router = require('./router/login');
+
+const router = require('./router/home');
+const signup_router = require('./router/signup');
+const login_router = require('./router/login');
+
+
+
+
 // const adminRouter = require('./router/adminIndexRouter');
 // const sellerRouter = require('./router/sellerRouter');
 // app creation
@@ -27,7 +34,8 @@ app.use(express.urlencoded({ extended: false }))
 
 //app.use(auth);
 app.use('/', router);
-
+app.use('/', signup_router);
+app.use('/', login_router);
 // using error handling middlware
 //app.use(errorHandling.notFound);
 

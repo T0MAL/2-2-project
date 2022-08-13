@@ -1,60 +1,142 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<html>
 
 <head>
-    <header class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2">
-                    <div class="header__logo">
-                        <a href="">
-                            <!-- <img src="img/logo.png" alt=""> -->
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-8">
-                    <div class="header__nav">
-                        <nav class="header__menu mobile-menu">
-                            <ul>
-                                <li><a href="">Homepage</a></li>
-                                <li><a href="">Store</a></li>
-                                <li><a href="">Categories <span class="arrow_carrot-down"></span></a>
-                                    <ul class="dropdown">
-                                        <li><a href="#">RPG</a></li>
-                                    </ul>
-                                </li>
-                                <li><a href="">Tournament</a></li>
-                                <li><a href="#">Our Blog</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-lg-2">
-                    <div class="header__right">
-                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href=""><span class="icon_profile"></span></a>
-                    </div>
-                </div>
-            </div>
-            <div id="mobile-menu-wrap"></div>
-        </div>
-    </header>
+    <title>GAME VENDOR</title>
+    <!-- <link rel="icon" href="/img/icons/mal-logo-head.png"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
-<body>
-    <div style="float: right; width : 50%">
-        <% for (let game of AllGames){ %>
-            <li>
-                <p> 
-                    <%= game.GAMENAME %>
-                </p>
+
+<header>
+    <h1 style="color: rgb(61, 39, 150); font-style: italic;">
+    </h1>
+    <section id="nav">
+        <div class="shundor">
+            <ul>
+                <li><a href="/">Home</a></li>
+                    <ul>
+                        <li><a href="/">Tags</a></li>
+                        <li><a href="/">Categories</a></li>
+                        <li><a href="/">Devs</a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <form action="/profile" method="post">
+                        <input type="hidden" name="username" value=<%=username %>>
+                        <button type="submit" > <%=username %> </button>
+                    </form>
+                <span style="float: right;">
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/signup">Signup</a></li>
+                </span>
+            </ul>
+        </div>
+    </section>
+
+    <section id="search">
+        <!-- !SEARCH -->
+        <form class="search-bar" action="/searchresults" method="post">
+            <input class="search-bar" type="text" placeholder="Search for anything" name="search">
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+
+</header>
+
+<nav class="navbar sticky-top navbar-light bg-light navbar-expand-lg">
+    <div class="container-fluid" id='nav'>
+        <a class="navbar-brand">
+
+            <form action="/logged_in" method="POST">
+
+                <input type="hidden" name="category" value="" />
+                <input type="hidden" name="username" value=<%=JSON.stringify(username) %> />
+                <button class="btn btn-info bg-dark" type="submit">
+                    <h1>GAME VENDOR</h1>
+                </button>
+            </form>
+
+        </a>
+
+        <form class="d-flex" action="/search" method="POST">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="tag">
+            <input type="hidden" name='username' value=<%=JSON.stringify(username) %> />
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item pr-4">
+                <a class="nav-link active" aria-current="page" href="#">
+
+                    <button>
+                        Subscribe
+                    </button>
+                </a>
             </li>
-            <% } %>
+            <li class="nav-item pr-4">
+
+                <form action="/clicked_cart" method="POST">
+                    <input type="hidden" name='user_info' value=<%=JSON.stringify(user) %> />
+                    <a class="nav-link active" href="#">
+                        <button type="submit">
+                            Cart
+                        </button>
+                    </a>
+                </form>
+
+            </li>
+          <li class="nav-item pr-4">
+                
+                    <form action="/profile" method="POST">
+                        <input type="hidden" name='user_info' value=<%=JSON.stringify(user) %> />
+                        <a class="nav-link active" href="#">
+                            <button type="submit">
+                                Profile
+                            </button>
+                        </a>
+                    </form>
+                
+            </li>
+            <li class="nav-item">
+                <form action="/logout" method="POST">
+                    <a class="nav-link active" href="#">
+                        <button type="submit">
+                            Log out
+                        </button>
+                    </a>
+                </form>
+            </li>
+        </ul>
+
     </div>
+
+</nav>
+
+<body>
+    <div class="main-content">
+            <section id="homepage-top-animes" style="margin-bottom: 15%;">
+                <div style="float: left; width : 50%">
+                    <h3> <a class="home" href="/">Games</a> </h3>
+                    <% for (let game of AllGames){ %>
+                        <li>
+                        <form action="/gameProfile" method="post">
+                            <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
+                            <button type="submit">
+                                <img height="40" src="/img/12.PNG">
+                                <%= game.GAMENAME %>
+                            </button>
+                            
+                        </form>
+                               
+                            </a>
+                        </li>
+                        <% } %>
+                </div>
+               
 </body>
+
 </html>

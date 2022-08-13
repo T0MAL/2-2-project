@@ -15,20 +15,7 @@ router.get("/signup", (req, res) => {
   res.render("signup.ejs");
 });
 
-router.post("/homeafterlogin", async (req, res) => {
-
-    // let user = JSON.parse(req.body.user_info);
-  
-    // if (user !== null) {
-  
-    //   let categories;
-    //   return res.render("homeafterlogin.ejs", {
-    //     value: categories,
-    //     user: user
-    //   });
-  
-    // }
-    
+router.post("/signup", async (req, res) => {
     let user = {
         playername: req.body.playername,
         username: req.body.username,
@@ -38,13 +25,19 @@ router.post("/homeafterlogin", async (req, res) => {
     console.log(user.username);
     DB_auth.insertAccountIntoDB(user.playername,user.email,user.username,user.password)
     let resultss = await DB.allgames()
-        res.render("homeafterlogin.ejs", {
-          AllGames : resultss
+        res.render("login.ejs", {
         }
         
       );
       
   });
 
+  router.get("/home",async (req, res) => {
+    results = await DB.allgames()
+    //console.log(results);
+  res.render("homeafterlogin.ejs", {
+    AllGames : results
+  })
+});
 
   module.exports = router;

@@ -15,7 +15,7 @@ async function getPassfromDB(user_name){
     return (await database.execute(sql, binds, database.options)).rows;
 }
 
-async function insertAccountIntoDB(player_name,user_name,email,password) {
+async function insertAccountIntoDB(player_name,email,user_name,password) {
     console.log(user_name)
     let sql = `
     Insert into SYSTEM.PLAYERS (PLAYERID,PLAYEREMAIL,PLAYERNAME,PWD) 

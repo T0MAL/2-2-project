@@ -1,13 +1,14 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="/login.css">
 </head>
 
 <body>
     <!-- !this is important. posts to /login route -->
     <br>
     <div style="align-self:center; margin-right:300px;">
-        <form action="/homeafterlogin" method="post" style="text-align: center;">
+        <form action="/home" method="post" style="text-align: center;">
             <h2>Login</h2>
             <div class="input-field">
                 <input type="text" name="username" id="username" placeholder="Enter Username">
@@ -15,7 +16,7 @@
             <div class="input-field">
                 <input type="password" name="password" id="password" placeholder="Enter Password">
             </div>
-            <input type="submit" value="LogIn">
+            <button type="submit" value="LogIn">LOGIN </button>
         </form>
         <a href="/signup" >Signup</a>
     </div>

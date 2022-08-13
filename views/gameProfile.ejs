@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> <%= game[0].GAMENAME %>  </title>
+</head>
+<body>
+    <h1> <%= game[0].GAMENAME %> </h1>
+    <p> genre: <%= game[0].GAMEGENRE %></p>
+    <p> platform: <%= game[0].CONSOLE %> </p>
+    <p> developer: <%= game[0].DEV %></p>
+    <div>
+        <p> Released:  <%= game[0].PUBLISHINGDATE %> </p>
+        <span style="float: right;">
+            <li> rating: <%= game[0].RATING %></li>
+            <li> price : <%= game[0].GAMEPRICE %></li>
+        </span>
+    </div>
+</body>
+</html>

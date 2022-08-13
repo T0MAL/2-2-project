@@ -11,11 +11,11 @@ const { count } = require("console");
 //let person_id;
 //let USER_NAME = null;
 
-router.get("/", (req, res) => {
+router.get("/login", (req, res) => {
   res.render("login.ejs");
 });
 
-router.post("/homeafterlogin", async (req, res) => {
+router.post("/home", async (req, res) => {
 
     // let user = JSON.parse(req.body.user_info);
   
@@ -32,8 +32,6 @@ router.post("/homeafterlogin", async (req, res) => {
   
       let username = req.body.username;
       let password = req.body.password;
-      let gg=req.body.from;
-      console.log(password);
   
   
       let results;
@@ -49,19 +47,44 @@ router.post("/homeafterlogin", async (req, res) => {
       let resultss = await DB.allgames()
       if (password === pass_db) {
         res.render("homeafterlogin.ejs", {
-          AllGames : resultss
+          AllGames : resultss,
+          username : username
         }
         
       );
       
       }
       else {
-        return res.redirect("/");
+        return res.redirect("/login");
       }
   });
 
   router.get("/signup", async (req, res) => {
     res.render("signup.ejs");
+  });
+
+  router.post("/gameProfile",async(req,res)=>{
+    let gameID=req.body.gameID
+    let game = await DB.getAGAME(gameID)
+    console.log(game)
+    res.render("gameProfile.ejs",{
+      game: game
+    })
+  });
+
+  router.post("/signup", async (req, res) => {
+    let user = {
+        playername: req.body.playername,
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+      };
+    console.log(user.username);
+    DB_auth.insertAccountIntoDB(user.playername,user.email,user.username,user.password)
+        res.render("login.ejs", {
+        }
+        
+      );  
   });
 
   module.exports = router;
