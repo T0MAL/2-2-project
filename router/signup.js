@@ -15,22 +15,7 @@ router.get("/signup", (req, res) => {
   res.render("signup.ejs");
 });
 
-router.post("/signup", async (req, res) => {
-    let user = {
-        playername: req.body.playername,
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-      };
-    console.log(user.username);
-    DB_auth.insertAccountIntoDB(user.playername,user.email,user.username,user.password)
-    let resultss = await DB.allgames()
-        res.render("login.ejs", {
-        }
-        
-      );
-      
-  });
+
 
   router.get("/home",async (req, res) => {
     results = await DB.allgames()

@@ -2,56 +2,229 @@
 <html>
 
 <head>
-    <title>My Anime ist</title>
-    <link rel="icon" href="/img/icons/mal-logo-head.png">
-    <link rel="stylesheet" href="/css/styles.css">
+    <title>GAME VENDOR</title>
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display|Roboto:300"rel="stylesheet">
 
+    <!-- <link rel="icon" href="/img/icons/mal-logo-head.png"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+
+
+
+footer {
+    color : #888888;
+    border-top: 1px solid #eeeeee;
+    margin-top: 16px;
+    padding: 8px 0;
+}
+
+header {
+    border-bottom: 1px solid #eeeeee;
+    margin-top: 16px;
+    margin-bottom: 48px;
+}
+
+h1 {
+    font-size: 64px;
+    margin-bottom: 16px;
+}
+
+
+header a {
+    color: #888888;
+    margin-right: 16px;
+    text-decoration: none;  /* removes the underline in links */
+}
+
+input.search-bar {
+    border: 1px solid #cccccc;
+    padding: 6px;
+    width: 300px
+}
+
+button {
+    cursor : pointer;
+}
+
+a.listed {
+    color: #946aec;
+    font-weight: bold;
+    padding: 6px;
+    text-decoration: none;
+    list-style: none;
+}
+a.home {
+    padding: 6px;
+    text-decoration: none;
+    list-style: none;
+}
+a.favourited {
+    color: #e60ad0;
+    padding: 6px;
+    text-decoration: none;
+}
+a.listed-character {
+    color: rgb(33, 116, 189);
+    font-weight: bold;
+    padding: 6px;
+    text-decoration: none;
+}
+
+form.search-bar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+form.search-bar button:hover {
+    background:#555555;
+}
+/* Clear floats */
+form.search-bar::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+header ul{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+}
+
+header ul li{
+  float: left;
+  width: 90px;
+  height: 30px;
+  background-color:#ffffff;
+  opacity: 0.99;
+  line-height: 30px;
+  text-align: center;
+}
+
+header ul li a{
+  text-decoration: none;
+  color: #888888;
+  display: block;
+  color: rgb(48, 18, 88);
+}
+
+header ul li a:hover{
+  background-color: #666666 ;
+  color:rgb(169, 228, 255);
+}
+header ul li ul li{
+  display: none;
+}
+header ul li:hover ul li{
+  display: block;
+  background-color:rgb(255, 255, 255);
+}
+
+
+.shundor{
+    margin-bottom: 20px;
+}
+#nav {
+    margin-bottom: 7ch;
+}
+.card {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.card button:hover {
+  opacity: 0.7;
+}
+
+.nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+</style>
 </head>
 
+<header>
+    <h1 style="color: rgb(61, 39, 150); font-style: italic;">
+    </h1>
+    <section id="nav">
+        <div class="shundor">
+            <ul>
+                <li><a href="/">Home</a></li>
+                    
+                        <li><a href="/login">Tags</a></li>
+                        <li><a href="/login">Categories</a></li>
+                        <li><a href="/login">Devs</a></li>
+
+                    
+                </li>
+                <li>
+                <span style="float: right;">
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/signup">Signup</a></li>
+                </span>
+            </ul>
+        </div>
+    </section>
+
+    <section id="search">
+        <!-- !SEARCH -->
+        <form class="search-bar" action="/searchresults" method="post">
+            <input class="search-bar" type="text" placeholder="Search for anything" name="search">
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+
+</header>
+
 <body>
+    
     <div class="main-content">
-        <%- include('../partials/header.ejs') %>
             <section id="homepage-top-animes" style="margin-bottom: 15%;">
                 <div style="float: left; width : 50%">
-                    <h3> <a class="home" href="/animelist/new">Newly Released Anime</a> </h3>
-                    <% for (let anime of newlyReleased){ %>
-                        <li>
-                            <a class="listed" href=<%="/anime/" + anime.ANIME_ID %> >
-                                <img height="40" src=<%="/img/anime_pic/" +anime.PICTURE_ID + ".jpg" %>>
-                                <%= anime.ANIME_TITLE %>
+                    <h3> <a class="home" href="/">Games</a> </h3>
+                    <% for (let game of AllGames){ %>
+                        
+                        <form action="/gameProfile" method="post">
+                            <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
+                            <button type="submit">
+                                <div class="card">
+                                    <img src="/img/12.PNG" style="width:100%">
+                                    <h3><%= game.GAMENAME %></h3>
+                                    <p class="price"><%= game.GAMEPRICE %></p>
+                                    <p><%= game.GAMEGENRE %></p>
+                                  </div>
+                                
+                            </button>
+                            
+                        </form>
+                               
                             </a>
-                        </li>
+                        
                         <% } %>
                 </div>
-                <div style="float: right; width : 50%">
-                    <h3><a class="home" href="/animelist/top">Top Animes</a></h3>
-                    <% for (let anime of topAnimes){ %>
-                        <li>
-                            <a class="listed" href=<%="/anime/" + anime.ANIME_ID %> >
-                                <img height="40" src=<%="/img/anime_pic/" +anime.PICTURE_ID + ".jpg" %>>
-                                <%= anime.ANIME_TITLE %>
-                            </a>
-                        </li>
-                        <% } %>
-                </div>
-
-            </section>
-
-            <section id="homepage-recommended-animes" style="margin-top: 50%;">
-                <% if(isAuth){ %>
-                    <h3><a class="home" href="/animelist/recommendation"> Recommended For You </a> </h3>
-                    <% for (let anime of recommendation){ %>
-                        <li>
-                            <a class="listed" href=<%="/anime/" + anime.ANIME_ID %> >
-                                <img height="40" src=<%="/img/anime_pic/" +anime.PICTURE_ID + ".jpg" %>>
-                                <%= anime.TITLE %>
-                            </a>
-                        </li>
-                        <% } %>
-                            <% } %>
-            </section>
-    </div>
-    <%- include('../partials/footer.ejs') %>
+               
 </body>
 
 </html>

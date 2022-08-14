@@ -6,6 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> <%= game[0].GAMENAME %>  </title>
 </head>
+
+<header>
+    <h1 style="color: rgb(61, 39, 150); font-style: italic;">
+    </h1>
+    <section id="nav">
+        <div class="shundor">
+            <ul>
+                <li><a href="/">Home</a></li>
+                    <ul>
+                        <li><a href="/">Tags</a></li>
+                        <li><a href="/">Categories</a></li>
+                        <li><a href="/">Devs</a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <form action="/profile" method="post">
+                        <input type="hidden" name="username" value=<%=username %>>
+                        <button type="submit" > <%=username %> </button>
+                    </form>
+                <span style="float: right;">
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/signup">Signup</a></li>
+                </span>
+            </ul>
+        </div>
+    </section>
+
+    <section id="search">
+        <!-- !SEARCH -->
+        <form class="search-bar" action="/searchresults" method="post">
+            <input class="search-bar" type="text" placeholder="Search for anything" name="search">
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+
+</header>
 <body>
     <h1> <%= game[0].GAMENAME %> </h1>
     <p> genre: <%= game[0].GAMEGENRE %></p>
@@ -17,6 +55,35 @@
             <li> rating: <%= game[0].RATING %></li>
             <li> price : <%= game[0].GAMEPRICE %></li>
         </span>
+        <form action="/getGAME" method="post">
+            <input type="hidden" name="game" value=<%= game[0].GAMEID %> >
+            <input type="hidden" name="username" value=<%=username %>>
+            <button type="submit">
+                <p> GET THE GAME</p>
+            </button>
+        </form>
+    </div>
+
+    <div>
+        <h1> DLCS</h1>
+        <div style="float: left; width : 50%">
+            <% for (let dlcc of dlcs){ %>
+                <li>
+                <form action="/getDLC" method="post">
+                    <input type="hidden" name="dlc" value=<%=dlcc.DLCID %> >
+                    <input type="hidden" name="game" value=<%= game[0].GAMEID %> >
+                    <input type="hidden" name="username" value=<%=username %>>
+                    <button type="submit">
+                        <img height="100" src="/img/12.PNG">
+                        <%= dlcc.DLCNAME %>
+                    </button>
+                    
+                </form>
+                       
+                    </a>
+                </li>
+                <% } %>
+        </div>
     </div>
 </body>
 </html>

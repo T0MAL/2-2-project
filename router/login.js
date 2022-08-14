@@ -6,6 +6,7 @@ const DB_auth = require("../database/dbauthapi");
  const DB = require("../database/dbHome");
 // const DB_Seller = require("../Database/DB-seller-api");
 const { count } = require("console");
+let alert = require('alert'); 
 
 
 //let person_id;
@@ -16,34 +17,14 @@ router.get("/login", (req, res) => {
 });
 
 router.post("/home", async (req, res) => {
-
-    // let user = JSON.parse(req.body.user_info);
-  
-    // if (user !== null) {
-  
-    //   let categories;
-    //   return res.render("homeafterlogin.ejs", {
-    //     value: categories,
-    //     user: user
-    //   });
-  
-    // }
-    
-  
       let username = req.body.username;
       let password = req.body.password;
-  
-  
       let results;
-  
       results = await DB_auth.getPassfromDB(username)
-
       let pass_db
       if(results.length>0){
         pass_db = results[0].PWD;
       }
-      
-      //console.log(pass_db);
       let resultss = await DB.allgames()
       if (password === pass_db) {
         res.render("homeafterlogin.ejs", {
@@ -63,14 +44,7 @@ router.post("/home", async (req, res) => {
     res.render("signup.ejs");
   });
 
-  router.post("/gameProfile",async(req,res)=>{
-    let gameID=req.body.gameID
-    let game = await DB.getAGAME(gameID)
-    console.log(game)
-    res.render("gameProfile.ejs",{
-      game: game
-    })
-  });
+  
 
   router.post("/signup", async (req, res) => {
     let user = {
@@ -79,12 +53,22 @@ router.post("/home", async (req, res) => {
         password: req.body.password,
         email: req.body.email,
       };
-    console.log(user.username);
-    DB_auth.insertAccountIntoDB(user.playername,user.email,user.username,user.password)
+      results = await DB_auth.getPassfromDB(user.username)
+      if(results.length>0){
+        alert("USER ALREADY EXISTS")
+        res.render("signup.ejs", {
+        }
+        
+      ); 
+      }
+      else{
+        DB_auth.insertAccountIntoDB(user.playername,user.email,user.username,user.password)
         res.render("login.ejs", {
         }
         
       );  
+      }
+    
   });
 
   module.exports = router;

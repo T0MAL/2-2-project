@@ -18,8 +18,8 @@ async function getPassfromDB(user_name){
 async function insertAccountIntoDB(player_name,email,user_name,password) {
     console.log(user_name)
     let sql = `
-    Insert into SYSTEM.PLAYERS (PLAYERID,PLAYEREMAIL,PLAYERNAME,PWD) 
-    values(:user_name,:email,:player_name,:password)
+    Insert into SYSTEM.PLAYERS (PLAYERID,PLAYEREMAIL,PLAYERNAME,PWD,PLAYERBALANCE,FRIENDCOUNT) 
+    values(:user_name,:email,:player_name,:password,0,0)
     `;
     const binds = {
         user_name : user_name,

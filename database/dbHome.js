@@ -27,6 +27,20 @@ async function playeDetails(user_id){
     return (await database.execute(sql, binds, database.options)).rows;
 }
 
+async function searchKey(key){
+    const sql = `
+    SELECT*
+    FROM 
+        SYSTEM.VIDEOGAMES
+    WHERE GAMENAME='%:key%' OR GAMEGENRE='%:key%' OR DEV='%:key%'
+    `;
+    const binds = {
+        key : key
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
 
 async function getAllCategories() {
     const sql = `
@@ -93,6 +107,19 @@ async function getAGAME(g_id) {
     const sql = `
         SELECT *
         FROM SYSTEM.VIDEOGAMES
+        WHERE GAMEID = :g_id
+        `;
+    const binds = {
+        g_id: g_id
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function getDLC(g_id) {
+    const sql = `
+        SELECT *
+        FROM SYSTEM.DLC
         WHERE GAMEID = :g_id
         `;
     const binds = {
@@ -237,4 +264,6 @@ module.exports = {
     isInCart,
     purchase,
     playeDetails,
+    getDLC,
+    searchKey,
 };

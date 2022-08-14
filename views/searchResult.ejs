@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <style>
+        .card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.card button:hover {
+  opacity: 0.7;
+}
+    </style>
+</head>
+<body>
+    <form class="search-bar" action="/searchresults" method="post">
+        <input class="search-bar" type="text" placeholder="Search for anything" name="searchKey" value="<%= key %>">
+        <input type="hidden" name="username" value=<%=username %>>
+        <button type="submit">Search</button>
+    </form>
+    <div style="float: left; width : 50%">
+        <h3> <a class="home" href="/">Games</a> </h3>
+        <% for (let game of Games){ %>
+            
+            <form action="/gameProfile" method="post">
+                <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
+                <input type="hidden" name="username" value=<%=username %>>
+                <button type="submit">
+                    <div class="card">
+                        <img src="/img/12.PNG" style="width:100%">
+                        <h3><%= game.GAMENAME %></h3>
+                        <p class="price"><%= game.GAMEPRICE %></p>
+                        <p><%= game.GAMEGENRE %></p>
+                      </div>
+                    
+                </button>
+                
+            </form>
+                   
+                </a>
+            
+            <% } %>
+    </div>
+
+</body>
+</html>
