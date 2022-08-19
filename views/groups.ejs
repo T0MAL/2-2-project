@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<header>
+    <h1 style="color: rgb(61, 39, 150); font-style: italic;">
+    </h1>
+    <section id="nav">
+        <div class="shundor">
+            <ul>
+                <li><a href="/">Home</a></li>
+                    <ul>
+                        <li><a href="/">Categories</a></li>
+                        <li><a href="/">Blogs</a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <form action="/profile" method="post">
+                        <input type="hidden" name="username" value=<%=username %>>
+                        <button type="submit" > <%=username %> </button>
+                    </form>
+                <span style="float: right;">
+                    <li><a href="/login">Login</a></li>
+                    <li><a href="/signup">Signup</a></li>
+                </span>
+            </ul>
+        </div>
+    </section>
+
+    <section id="search">
+        <!-- !SEARCH -->
+        <form class="search-bar" action="/searchresults" method="post">
+            <input class="search-bar" type="text" placeholder="Search for anything" name="searchKey">
+            <input type="hidden" name="username" value=<%=username %>>
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+    <section id="homepage-top-animes" style="margin-bottom: 15%;">
+        <section id="homepage-top-animes" style="margin-bottom: 15%;">
+            <div style="float: left; width : 50%">
+                <h3> <a class="home" href="/">Games</a> </h3>
+                <% for (let game of AllGames){ %>
+                    
+                    <form action="/groupProfile" method="post">
+                        <input type="hidden" name="groupID" value=<%=group.GROUPID %> >
+                        <input type="hidden" name="username" value=<%=username %>>
+                        <button type="submit">
+                            <div class="card">
+                                <img src="/img/12.PNG" style="width:100%">
+                                <h3><%= group.GROUPNAME %></h3>
+                              </div>
+                        </button>
+                        
+                    </form>
+                           
+                        </a>
+                    
+                    <% } %>
+            </div>
+</header>
+<body>
+    
+</body>
+</html>

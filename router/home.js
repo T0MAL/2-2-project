@@ -50,6 +50,35 @@ router.get("/",async (req, res) => {
     })
   });
 
+
+  router.post("/groupProfile",async(req,res)=>{
+    let groupID=req.body.groupID
+    let username=req.body.username
+    let group = await DB.getAGROUP(groupID)
+    let groupMessages= await DB.getGROUPMSG(groupID)
+   // console.log(game)
+    res.render("groupProfile.ejs",{
+      group: group,
+      username : username,
+      groupMessages : groupMessages,
+    })
+  });
+
+    router.post("/getGame",async(req,res)=>{
+    let username=req.body.username
+  //  console.log(username)
+    let gameID = req.body.game
+    let dlcs=await DB.getDLC(gameID)
+    let game = await DB.getAGAME(gameID)
+   // console.log(dlcs)
+    //write db code to buy game using condition
+    res.render("gameProfile.ejs",{
+      game: game,
+      username : username,
+      dlcs : dlcs
+    })
+  });
+
   router.post("/getGame",async(req,res)=>{
     let username=req.body.username
   //  console.log(username)
@@ -82,9 +111,9 @@ router.get("/",async (req, res) => {
   router.post("/searchresults", async (req, res) => {
     let username=req.body.username
     let key = req.body.searchKey
+    key = key.toUpperCase();
     let Games= await DB.searchKey(key);
     // write db code here with condition
-    console.log(Games);
     res.render("searchResult.ejs",{
       Games: Games,
       username : username,

@@ -32,7 +32,11 @@ async function searchKey(key){
     SELECT*
     FROM 
         SYSTEM.VIDEOGAMES
-    WHERE GAMENAME='%:key%' OR GAMEGENRE='%:key%' OR DEV='%:key%'
+    WHERE ( UPPER(GAMENAME) LIKE '%'||:key||'%')
+    OR
+    ( UPPER(GAMEGENRE) LIKE '%'||:key||'%')
+    OR
+    ( UPPER(DEV) LIKE '%'||:key||'%')
     `;
     const binds = {
         key : key
