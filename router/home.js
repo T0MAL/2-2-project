@@ -3,6 +3,7 @@ const express = require("express");
 
 const router = express.Router({ mergeParams: true });
 const DB = require("../database/dbHome");
+const DB2 = require("../database/dbauthapi");
 const { count } = require("console");
 
 
@@ -30,10 +31,12 @@ router.get("/",async (req, res) => {
     let username = req.body.username;
    // console.log(username)
     let user= await DB.playeDetails(username)
-    console.log(user)
+    let Games = await DB.myGames(username)
+   // console.log(user)
     res.render("profile.ejs",{
       username : username,
-      user : user
+      user : user,
+      Games : Games
     })
   });
 
@@ -42,11 +45,17 @@ router.get("/",async (req, res) => {
     let username=req.body.username
     let dlcs=await DB.getDLC(gameID)
     let game = await DB.getAGAME(gameID)
-   // console.log(game)
+    let gg= await DB.isMyGames(username,gameID)
+    let flag=true
+    if(gg.length>0){
+        flag=false
+    }
+   console.log(flag)
     res.render("gameProfile.ejs",{
       game: game,
       username : username,
-      dlcs : dlcs
+      dlcs : dlcs,
+      flag : flag
     })
   });
 
@@ -72,27 +81,89 @@ router.get("/",async (req, res) => {
     let game = await DB.getAGAME(gameID)
    // console.log(dlcs)
     //write db code to buy game using condition
+    let bara = await DB.purchaseGame(username,gameID)
+    let gg= await DB.isMyGames(username,gameID)
+    let flag=true
+    if(gg.length>0){
+        flag=false
+    }
     res.render("gameProfile.ejs",{
       game: game,
       username : username,
-      dlcs : dlcs
+      dlcs : dlcs,
+      flag : flag
     })
   });
 
-  router.post("/getGame",async(req,res)=>{
+  router.post("/editProfile",async(req,res)=>{
     let username=req.body.username
-  //  console.log(username)
-    let gameID = req.body.game
-    let dlcs=await DB.getDLC(gameID)
-    let game = await DB.getAGAME(gameID)
-   // console.log(dlcs)
-    //write db code to buy game using condition
-    res.render("gameProfile.ejs",{
-      game: game,
+    let user =await DB.playeDetails(username)
+    console.log(user)
+    res.render("editProfile.ejs",{
       username : username,
-      dlcs : dlcs
+      user : user
     })
   });
+
+  router.post("/editedProfile",async(req,res)=>{
+    let username=req.body.username
+    let Games = await DB.myGames(username)
+    let playerNewName = req.body.playerNewName
+    let newEmail = req.body.newEmail
+    let newBio = req.body.newBio
+    let newPassword = req.body.newPassword
+    let password = req.body.password
+    results = await DB2.getPassfromDB(username)
+      let pass_db
+      if(results.length>0){
+        pass_db = results[0].PWD;
+      }
+      if (password === pass_db) {
+        if(newPassword==""){
+          //editprofilewithpass()
+          await DB.editproiflewithoutpass(username,playerNewName,newEmail,newBio)
+          let user= await DB.playeDetails(username)
+          res.render("profile.ejs",{
+          username : username,
+          user : user,
+          Games : Games
+        })
+        }
+        else{
+          await DB.editproiflewithpass(username,playerNewName,newEmail,newBio,newPassword)
+          res.render("login.ejs",{
+            
+          })
+        }
+        
+      }
+      
+   // console.log(game)
+   let user = DB.playeDetails(username)
+   res.render("profile.ejs",{
+    username : username,
+    user : user,
+    Games : Games
+  })
+  });
+
+  // router.post("/getGame",async(req,res)=>{
+  //   let username=req.body.username
+  // //  console.log(username)
+  //   let gameID = req.body.game
+  //   let dlcs=await DB.getDLC(gameID)
+  //   let game = await DB.getAGAME(gameID)
+  //  // console.log(dlcs)
+  //   //write db code to buy game using condition
+    
+  //   let bought = DB.purchaseGame(username,gameID,sysda)
+
+  //   res.render("gameProfile.ejs",{
+  //     game: game,
+  //     username : username,
+  //     dlcs : dlcs
+  //   })
+  // });
 
   router.post("/getDLC", async (req, res) => {
     let username=req.body.username

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+</head>
+
+<header>
+    <h1 style="color: rgb(61, 39, 150); font-style: italic;">
+    </h1>
+    <section id="nav">
+        <div class="shundor">
+            <ul>
+                <li><a href="/">Home</a></li>
+                    <ul>
+                        <li><a href="/">Categories</a></li>
+                        <li><a href="/">Blogs</a></li>
+                        <li><a href="/">Devs</a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <form action="/profile" method="post">
+                        <input type="hidden" name="username" value=<%=username %>>
+                        <button type="submit" > <%=username %> </button>
+                    </form>
+                <span style="float: right;">
+                    <li><a href="/">Logout</a></li>
+                </span>
+            </ul>
+        </div>
+    </section>
+
+    <section id="search">
+        <!-- !SEARCH -->
+        <form class="search-bar" action="/searchresults" method="post">
+            <input class="search-bar" type="text" placeholder="Search for anything" name="searchKey">
+            <input type="hidden" name="username" value=<%=username %>>
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+
+</header>
+<body>
+    
+    <div style="align-self:center; margin-right:300px;">
+        <form action="/editedProfile" method="post" style="text-align: center;">
+            <input type="hidden" name="username" value=<%=username %>>
+            <div class="input-field">
+                <p>
+                    Name:
+                </p>
+                <input type="text" name="playerNewName" id="playerNewName" value="<%= user[0].PLAYERNAME %>">
+            </div>
+            
+            <div class="input-field">
+                <p>
+                    Email:
+                </p>
+                <input type="email" name="newEmail" id="newEmail" value="<%= user[0].PLAYEREMAIL %>">
+            </div>
+            <div class="input-field">
+                <p>
+                    Bio:
+                </p>
+                <input type="text" name="newBio" id="newBio" value="<%= user[0].PLAYERBIO %>">
+            </div>
+            <div class="input-field">
+                <p>
+                    New Password:
+                </p>
+                <input type="password" name="newPassword" id="newPassword" placeholder="Enter New Password">
+            </div>
+            <div class="input-field">
+                <p>
+                    Type old password to continue:
+                </p>
+                <input type="password" name="password" id="password" placeholder="">
+            </div>
+            
+            <button type="submit" value="Register">
+                <p> Save </p>    
+            </button>
+        </form>
+    </div>
+</body>
+</html>

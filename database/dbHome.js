@@ -4,7 +4,7 @@ async function allgames(){
     const sql = `
     SELECT* 
     FROM 
-        SYSTEM.VIDEOGAMES
+        VIDEOGAMES
     `;
     const binds = {
 
@@ -17,8 +17,8 @@ async function playeDetails(user_id){
     const sql = `
     SELECT*
     FROM 
-        SYSTEM.PLAYERS
-    WHERE PLAYERID = :user_id
+        PLAYERS
+    WHERE USERNAME = :user_id
     `;
     const binds = {
         user_id:user_id
@@ -27,16 +27,69 @@ async function playeDetails(user_id){
     return (await database.execute(sql, binds, database.options)).rows;
 }
 
+async function myGames(username){
+    const sql = `
+    SELECT* 
+    FROM 
+        VIDEOGAMES
+    WHERE
+        GAMEID = ANY (
+            SELECT GAMEID
+            FROM PURCHASE
+            WHERE :username = USERNAME
+        )
+    
+    `;
+    const binds = {
+        username : username
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function isMyGames(username,gameID){
+    const sql = `
+    SELECT* 
+    FROM 
+        PURCHASE
+    WHERE
+        GAMEID = :gameID
+        AND
+        USERNAME = :username
+    
+    `;
+    const binds = {
+        username : username,
+        gameID : gameID
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
+
+
+async function purchaseGame(playerID,gameID){
+    let sql = `
+    Insert into PURCHASE (USERNAME,GAMEID,PURCHASEDATE) 
+    values(:playerID,:gameID,SYSDATE)
+    `;
+    const binds = {
+        playerID : playerID,
+        gameID : gameID
+    }
+    return (await database.execute(sql,binds, database.options))
+}
+
 async function searchKey(key){
     const sql = `
     SELECT*
     FROM 
-        SYSTEM.VIDEOGAMES
+        VIDEOGAMES
     WHERE ( UPPER(GAMENAME) LIKE '%'||:key||'%')
     OR
     ( UPPER(GAMEGENRE) LIKE '%'||:key||'%')
     OR
-    ( UPPER(DEV) LIKE '%'||:key||'%')
+    ( UPPER(CONSOLE) LIKE '%'||:key||'%')
     `;
     const binds = {
         key : key
@@ -48,8 +101,8 @@ async function searchKey(key){
 
 async function getAllCategories() {
     const sql = `
-        SELECT DISTINCT Category
-        FROM SYSTEM.Catagories
+        SELECT DISTINCT GAMEGENRE
+        FROM VIDEOGAMES
         `;
     const binds = {
 
@@ -61,39 +114,26 @@ async function getAllCategories() {
 async function getGamesByCategories(category){
     const sql = `
         SELECT* 
-        FROM SYSTEM.VIDEOGAMES
+        FROM VIDEOGAMES
+        WHERE GAMEGENRE = :category
         `;
     const binds={
         category : category
     }
     return (await database.execute(sql,binds,database.options)).rows;
 }
-async function getAllUsers(category) {
+async function getAllUsers() {
     const sql = `
         SELECT *
-        FROM SYSTEM.PLAYERS
+        FROM PLAYERS
         `;
     const binds = {
-        category: category
+        
     }
 
     return (await database.execute(sql, binds, database.options)).rows;
 }
 
-async function purchase(user_id, game_id,date){
-    const sql = `
-    INSERT INTO SYSTEM.PURCHASE
-    VALUES(:user_id,:game_id,"date)
-   `;
-
-   const binds={
-    user_id : user_id,
-    game_id : game_id,
-    date : date
-   }
-
-   return (await database.execute(sql, binds, database.options)).rows;
-}
 
 async function getAllProductsWithinPrice(price) {
     const sql = `
@@ -110,7 +150,7 @@ async function getAllProductsWithinPrice(price) {
 async function getAGAME(g_id) {
     const sql = `
         SELECT *
-        FROM SYSTEM.VIDEOGAMES
+        FROM VIDEOGAMES
         WHERE GAMEID = :g_id
         `;
     const binds = {
@@ -130,79 +170,6 @@ async function getDLC(g_id) {
         g_id: g_id
     }
 
-    return (await database.execute(sql, binds, database.options)).rows;
-}
-async function isInCart(player, game) {
-    const sql = `
-        SELECT COUNT(*) as COUNT
-        FROM Cart
-        WHERE product_id = :product_id
-        AND
-        person_id = :person_id
-        AND CART_ID IS NULL
-        `;
-    const binds = {
-        person_id: person_id,
-        product_id: product_id
-    }
-
-    return (await database.execute(sql, binds, database.options)).rows;
-}
-
-async function addToCart(person_id, product_id, quantity) {
-    const sql = `
-        INSERT INTO SYSTEM.Cart
-        VALUES(:person_id,:product_id, :quantity)
-        `;
-    const binds = {
-        person_id: person_id,
-        product_id: product_id,
-        quantity: quantity,
-    
-    }
-
-    return (await database.execute(sql, binds, database.options));
-}
-
-
-async function getCartItems(person_id) {
-    const sql = `
-        SELECT *
-        FROM SYSTEM.Cart
-        WHERE person_id==:person_id
-        `;
-    const binds = {
-        person_id: person_id,
-
-    }
-
-    return (await database.execute(sql, binds, database.options)).rows;
-}
-
-
-async function deleteItemFromCart(person_id, product_id) {
-    const sql = `
-        DELETE FROM SYSTEM.CART
-        WHERE product_id = :product_id
-        AND person_id = :person_id
-   `;
-    const binds = {
-        person_id: person_id,
-        product_id: product_id
-    };
-    (await database.execute(sql, binds, database.options));
-    return;
-}
-
-async function getUserDetails(person_id) {
-    const sql = `
-        SELECT *
-        FROM SYSTEM.PLAYERS
-        WHERE PLAYERID = :person_id
-   `;
-    const binds = {
-        person_id: person_id,
-    };
     return (await database.execute(sql, binds, database.options)).rows;
 }
 
@@ -251,23 +218,51 @@ async function addToGROUP(user_id, group_id){
    return (await database.execute(sql, binds, database.options)).rows;
 }
 
+async function editproiflewithoutpass(username,newName,newEmail,newBio){
+    let sql = `
+    UPDATE players
+    SET PLAYERNAME = :newName, PLAYEREMAIL= :newEmail, PLAYERBIO = :newBio
+    WHERE username= :username
+    `;
+    const binds = {
+        username : username,
+        newName : newName,
+        newEmail : newEmail,
+        newBio : newBio
+    }
+    return (await database.execute(sql,binds, database.options))
+}
 
+async function editproiflewithpass(username,newName,newEmail,newBio,newPass){
+    let sql = `
+    UPDATE players
+    SET PLAYERNAME = :newName, PLAYEREMAIL= :newEmail, PLAYERBIO = :newBio, PWD = :newPass
+    WHERE username= :username
+    `;
+    const binds = {
+        username : username,
+        newName : newName,
+        newEmail : newEmail,
+        newBio : newBio,
+        newPass : newPass
+    }
+    return (await database.execute(sql,binds, database.options))
+}
 
 
 module.exports = {
     allgames,
-    getUserDetails,
-    deleteItemFromCart,
-    getCartItems,
     getGamesByCategories,
     getAGAME,
     getAllCategories,
     getAllUsers,
     getAllProductsWithinPrice,
-    addToCart,
-    isInCart,
-    purchase,
     playeDetails,
     getDLC,
     searchKey,
+    purchaseGame,
+    myGames,
+    isMyGames,
+    editproiflewithoutpass,
+    editproiflewithpass
 };

@@ -1,12 +1,13 @@
 const database = require('./db');
 
+
 async function getPassfromDB(user_name){
     const sql = `
     SELECT* 
     FROM 
-        SYSTEM.PLAYERS 
+        PLAYERS 
     WHERE 
-        PLAYERID = :user_name
+        USERNAME = :user_name
         `;
     const binds = {
         user_name : user_name
@@ -18,8 +19,8 @@ async function getPassfromDB(user_name){
 async function insertAccountIntoDB(player_name,email,user_name,password) {
     console.log(user_name)
     let sql = `
-    Insert into SYSTEM.PLAYERS (PLAYERID,PLAYEREMAIL,PLAYERNAME,PWD,PLAYERBALANCE,FRIENDCOUNT) 
-    values(:user_name,:email,:player_name,:password,0,0)
+    Insert into PLAYERS (USERNAME,PLAYEREMAIL,PLAYERNAME,PWD,PLAYERBALANCE,FRIENDCOUNT,PLAYERBIO) 
+    values(:user_name,:email,:player_name,:password,0,0,'newbie')
     `;
     const binds = {
         user_name : user_name,
