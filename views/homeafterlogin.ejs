@@ -172,9 +172,35 @@ header ul li:hover ul li{
             <ul>
                 <li><a href="/">Home</a></li>
                     <ul>
-                        <li><a href="/">Categories</a></li>
-                        <li><a href="/">Blogs</a></li>
-                        <li><a href="/">Devs</a></li>
+                        <li>
+                            <form action="/categories" method="post">
+                                <input type="hidden" name="username" value=<%=username %>>
+                                <button type="submit" > Categories </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="/allblogs" method="post">
+                                <input type="hidden" name="username" value=<%=username %>>
+                                <button type="submit" > Blogs </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="/news" method="post">
+                                <input type="hidden" name="username" value=<%=username %>>
+                                <button type="submit" > News </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="/championship" method="get">
+                                <input type="hidden" name="username" value=<%=username %>>
+                                <button type="submit" > championships </button>
+                            </form>
+                        </li>
+                        
+                        
+                        
+
+                        
 
                     </ul>
                 </li>
@@ -209,7 +235,6 @@ header ul li:hover ul li{
                 <div style="float: left; width : 50%">
                     <h3> <a class="home" href="/">Games</a> </h3>
                     <% for (let game of AllGames){ %>
-                        
                         <form action="/gameProfile" method="post">
                             <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
                             <input type="hidden" name="username" value=<%=username %>>
@@ -219,10 +244,8 @@ header ul li:hover ul li{
                                     <h3><%= game.GAMENAME %></h3>
                                     <p class="price"><%= game.GAMEPRICE %></p>
                                     <p><%= game.GAMEGENRE %></p>
-                                  </div>
-                                
+                                </div>
                             </button>
-                            
                         </form>
                                
                             </a>

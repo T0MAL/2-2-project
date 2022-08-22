@@ -1,5 +1,7 @@
 const database = require('./db');
 
+
+
 async function allgames(){
     const sql = `
     SELECT* 
@@ -8,6 +10,20 @@ async function allgames(){
     `;
     const binds = {
 
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function getPostbyID(postID){
+    const sql = `
+    SELECT* 
+    FROM 
+        POST 
+    WHERE POSTID = :postID
+    `;
+    const binds = {
+        postID : postID
     }
 
     return (await database.execute(sql, binds, database.options)).rows;
@@ -26,6 +42,8 @@ async function playeDetails(user_id){
 
     return (await database.execute(sql, binds, database.options)).rows;
 }
+
+
 
 async function myGames(username){
     const sql = `
@@ -106,6 +124,63 @@ async function getAllCategories() {
         `;
     const binds = {
 
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function getAllBlogs() {
+    const sql = `
+        SELECT*
+        FROM BLOG
+        `;
+    const binds = {
+
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function getMyBlogs(username) {
+    const sql = `
+        SELECT*
+        FROM BLOG
+        WHERE BLOGID = ANY (SELECT BLOGID
+            FROM BLOGMEMBERS
+            WHERE USERNAME=:username
+            )
+        `;
+    const binds = {
+        username : username
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function getABlog(blogID) {
+    const sql = `
+        SELECT*
+        FROM BLOG
+        WHERE BLOGID = :blogID
+        `;
+    const binds = {
+        blogID : blogID
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function getBlogPost(blogID) {
+    const sql = `
+        SELECT*
+        FROM POST
+        WHERE POSTID = ANY (SELECT POSTID
+            FROM POST_UTIL
+            WHERE BLOGID = :blogID)
+        ORDER BY POSTDATE DESC
+        `;
+    const binds = {
+        blogID : blogID
     }
 
     return (await database.execute(sql, binds, database.options)).rows;
@@ -204,19 +279,6 @@ async function addToWishList(user_id, game_id){
    return (await database.execute(sql, binds, database.options)).rows;
 }
 
-async function addToGROUP(user_id, group_id){
-    const sql = `
-    INSERT INTO SYSTEM.WISHLIST
-    VALUES(:user_id,:game_id)
-   `;
-
-   const binds={
-    user_id : user_id,
-    game_id : game_id
-   }
-
-   return (await database.execute(sql, binds, database.options)).rows;
-}
 
 async function editproiflewithoutpass(username,newName,newEmail,newBio){
     let sql = `
@@ -249,8 +311,67 @@ async function editproiflewithpass(username,newName,newEmail,newBio,newPass){
     return (await database.execute(sql,binds, database.options))
 }
 
+async function isBlogMember(username, blogID){
+    const sql = `
+    SELECT* 
+    FROM BLOGMEMBERS
+    WHERE BLOGID = :blogID AND USERNAME = :username
+   `;
+
+   const binds={
+    username : username,
+    blogID : blogID
+   }
+
+   return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function addToBlog(username, blodID){
+    const sql = `
+    INSERT INTO BLOGMEMBERS
+    VALUES(:blogID,:username,SYSDATE)
+   `;
+
+   const binds={
+    username : username,
+    blogID : blodID
+   }
+
+   return (await database.execute(sql, binds, database.options));
+}
+
+async function createPost(postID,blogText){
+    const sql = `
+    INSERT INTO POST
+    VALUES(:postID,:blogText,SYSDATE)
+   `;
+
+   const binds={
+        postID : postID,
+        blogText : blogText
+   }
+
+   return (await database.execute(sql, binds, database.options));
+}
+
+async function addPost(postID,blogID,username){
+    const sql = `
+    INSERT INTO POST_UTIL
+    VALUES(:postID,:blogID,:username)
+   `;
+
+   const binds={
+        postID : postID,
+        blogID : blogID,
+        username : username
+   }
+
+   return (await database.execute(sql, binds, database.options));
+}
 
 module.exports = {
+    addPost,
+    createPost,
     allgames,
     getGamesByCategories,
     getAGAME,
@@ -264,5 +385,13 @@ module.exports = {
     myGames,
     isMyGames,
     editproiflewithoutpass,
-    editproiflewithpass
+    editproiflewithpass,
+    getAllBlogs,
+    getMyBlogs,
+    getABlog,
+    getBlogPost,
+    isBlogMember,
+    addToBlog,
+    getPostbyID,
+
 };

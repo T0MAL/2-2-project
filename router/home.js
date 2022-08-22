@@ -10,6 +10,19 @@ const { count } = require("console");
 //let person_id;
 //let USER_NAME = null;
 
+
+function makeid(length) {
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * 
+charactersLength));
+ }
+ return result;
+}
+
+
 router.get("/",async (req, res) => {
     results = await DB.allgames()
     //console.log(results);
@@ -191,6 +204,120 @@ router.get("/",async (req, res) => {
       key : key
     })
   });
+
+  router.get("/championship", async (req, res) => {
+    let username=req.body.username
+    res.render("tourneys.ejs",{
+      username : username,
+    })
+  });
+
+  router.post("/allBlogs", async (req, res) => {
+    let username=req.body.username
+    let allBlogs=await DB.getAllBlogs()
+
+    let myBlogs=await DB.getMyBlogs(username)
+    console.log(myBlogs)
+    let searchResult=[]
+    res.render("allblogs.ejs",{
+      username : username,
+      allBlogs : allBlogs,
+      myBlogs : myBlogs,
+      searchResult : searchResult,
+    })
+  });
+
+  router.post("/blogHome", async (req, res) => {
+    let username=req.body.username
+    let blogID= req.body.blogID
+    let blog = await DB.getABlog(blogID)
+    let posts=await DB.getBlogPost(blogID)
+    let flag=false
+    let flag2=false
+    let tmp=await DB.isBlogMember(username,blogID)
+    if(blog[0].username == username){
+        flag=true
+    }
+    if(tmp.length> 0){
+      flag2=true
+    }
+    let plainT=""
+    res.render("blogHome.ejs",{
+      username : username,
+      blog : blog,
+      posts : posts,
+      flag : flag,
+      flag2 : flag2,
+      plainT : plainT
+    })
+  });
+
+  router.post("/followBlog", async (req, res) => {
+    let username=req.body.username
+    let blogID= req.body.blogID
+    await DB.addToBlog(username,blogID)
+    let blog = await DB.getABlog(blogID)
+    let posts=await DB.getBlogPost(blogID)
+    let flag=false
+    let flag2=false
+    let tmp=await DB.isBlogMember(username,blogID)
+    console.log(tmp)
+    if(blog[0].username == username){
+        flag=true
+    }
+    if(tmp.length> 0){
+      flag2=true
+    }
+    let plainT=""
+    res.render("blogHome.ejs",{
+      username : username,
+      blog : blog,
+      posts : posts,
+      flag : flag,
+      flag2 : flag2,
+      plainT : plainT
+    })
+  });
+
+  router.post("/postBlogIn", async (req, res) => {
+    let username=req.body.username
+    let blogID= req.body.blogID
+    let postText = req.body.postText
+    if(postText.length>0){
+      let postID=makeid(10)
+      //  await DB.addToBlog(username,blogID)
+        let gg = await DB.getPostbyID(postID)
+        while(gg.length>0){
+          postID=makeid(10)
+          gg=await DB.getPostbyID(postID)
+        }
+        await DB.createPost(postID,postText)
+        await DB.addPost(postID,blogID,username)
+    }
+    
+    let blog = await DB.getABlog(blogID)
+    let posts=await DB.getBlogPost(blogID)
+    let flag=false
+    let flag2=false
+    let tmp=await DB.isBlogMember(username,blogID)
+    if(blog[0].username == username){
+        flag=true
+    }
+    if(tmp.length> 0){
+      flag2=true
+    }
+    let plainT=""
+    res.render("blogHome.ejs",{
+      username : username,
+      blog : blog,
+      posts : posts,
+      flag : flag,
+      flag2 : flag2,
+      plainT : plainT
+    })
+  });
+
+
 
 
   module.exports = router;

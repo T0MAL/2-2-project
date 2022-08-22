@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <%= blog[0].BLOGTITLE %>
+    <% if(flag){ %>
+        <form action="/editBlog" method="post">
+            <input type="hidden" name="blogID" value=<%=blog[0].BLOGID %> >
+            <input type="hidden" name="username" value=<%=username %>>
+            <button type="submit">
+                <p> Change settings </p>
+            </button>
+        </form>   
+      <% } else{ %>  
+     <% } %>
+
+     <% if(flag2){ %>
+        <div>
+            <form action="/postBlogIn" method="post" style="text-align: center;">
+                <h2>Create Post</h2>
+                <div class="input-field">
+                    <input type="text" name="postText" id="postText" placeholder="Type your post" value=<%= plainT %>>
+                </div>
+                <input type="hidden" name="blogID" value=<%=blog[0].BLOGID %> >
+                <input type="hidden" name="username" value=<%=username %>>
+                <button type="post" >POST </button>
+            </form>
+        </div>
+        <div style="float: left; width : 50%">
+            <% for (let post of posts){ %>
+                <form action="/publicProfile" method="post">
+                    <input type="hidden" name="username" value=<%=post.username %>>
+                    <button type="submit">
+                      <p> <%=post.USERNAME %> </p>  
+                    </button>
+                </form>  
+                <p> <%= post.POSTDATE %> </p>
+                <h3> <%= post.TEXT %> </h3>
+                <% } %>
+        </div>
+      <% } else{ %> 
+        <form action="/followBlog" method="post">
+            <input type="hidden" name="username" value=<%=username%>>
+            <input type="hidden" name="blogID" value=<%=blog[0].BLOGID%>>
+            <button type="submit">
+                <p>Follow</p>
+            </button>
+        </form>  
+     <% } %>
+</body>
+</html>
