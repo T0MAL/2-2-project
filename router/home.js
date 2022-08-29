@@ -25,10 +25,12 @@ charactersLength));
 
 router.get("/",async (req, res) => {
     results = await DB.allgames()
+    freeGames = await DB.getFreeGames()
     //console.log(results);
     //let username = "Not logged in"
   res.render("home.ejs", {
     AllGames : results,
+    freeGames : freeGames
   })
 });
 
@@ -51,6 +53,33 @@ router.get("/",async (req, res) => {
       user : user,
       Games : Games
     })
+  });
+
+  router.post("/publicProfile", async (req, res) => {
+    let username = req.body.username
+    let visiting = req.body.visiting
+    console.log(visiting)
+   if(username==visiting){
+    let user= await DB.playeDetails(username)
+    let Games = await DB.myGames(username)
+    console.log(user)
+    res.render("profile.ejs",{
+      username : username,
+      user : user,
+      Games : Games
+    })
+   }
+   else{
+    let user= await DB.playeDetails(visiting)
+    let Games = await DB.myGames(visiting)
+    console.log(user)
+    res.render("publicProfile.ejs",{
+      username : username,
+      user : user,
+      Games : Games
+    })
+   }
+    
   });
 
   router.post("/gameProfile",async(req,res)=>{
@@ -95,6 +124,29 @@ router.get("/",async (req, res) => {
    // console.log(dlcs)
     //write db code to buy game using condition
     let bara = await DB.purchaseGame(username,gameID)
+    let gg= await DB.isMyGames(username,gameID)
+    let flag=true
+    if(gg.length>0){
+        flag=false
+    }
+    res.render("gameProfile.ejs",{
+      game: game,
+      username : username,
+      dlcs : dlcs,
+      flag : flag
+    })
+  });
+
+  router.post("/getDLC",async(req,res)=>{
+    let username=req.body.username
+  //  console.log(username)
+    let gameID = req.body.game
+    let dlcs=await DB.getDLC(gameID)
+    let game = await DB.getAGAME(gameID)
+   // console.log(dlcs)
+    //write db code to buy game using condition
+    let dlcID = req.body.dlcID
+    await DB.ownDLC(dlcID,username)
     let gg= await DB.isMyGames(username,gameID)
     let flag=true
     if(gg.length>0){
@@ -215,15 +267,29 @@ router.get("/",async (req, res) => {
   router.post("/allBlogs", async (req, res) => {
     let username=req.body.username
     let allBlogs=await DB.getAllBlogs()
-
     let myBlogs=await DB.getMyBlogs(username)
-    console.log(myBlogs)
-    let searchResult=[]
+    //console.log(myBlogs)
+    let blogSearchResult=[]
     res.render("allblogs.ejs",{
       username : username,
       allBlogs : allBlogs,
       myBlogs : myBlogs,
-      searchResult : searchResult,
+      blogSearchResult : blogSearchResult
+    })
+  });
+
+  router.post("/blogSearch", async (req, res) => {
+    let username=req.body.username
+    let key=req.body.key
+    let blogSearchResult = await DB.searchBlog(key)
+    let allBlogs=await DB.getAllBlogs()
+    let myBlogs=await DB.getMyBlogs(username)
+    console.log(blogSearchResult)
+    res.render("allblogs.ejs",{
+      username : username,
+      allBlogs : allBlogs,
+      myBlogs : myBlogs,
+      blogSearchResult : blogSearchResult
     })
   });
 
@@ -318,6 +384,85 @@ router.get("/",async (req, res) => {
   });
 
 
+  router.post("/createBlog", async (req, res) => {
+    let username=req.body.username
+    let blogTitle = req.body.blogTitle
+    let blogDes=req.body.blogDes
+    let blogID=makeid(10)
+    if(blogTitle!=""){
+      
+        let gg = await DB.getBlogbyID(blogID)
+        while(gg.length>0){
+          blogID=makeid(10)
+          gg=await DB.getBlogbyID(blogID)
+        }
+        await DB.createBlog(blogID,blogTitle,blogDes,username)
+    }
+    console.log(blogID)
+    console.log(blogTitle)
+    console.log(blogDes)
+    console.log(username)
+    let blog = await DB.getABlog(blogID)
+    let posts=await DB.getBlogPost(blogID)
+    let flag=false
+    let flag2=false
+    let tmp=await DB.isBlogMember(username,blogID)
+    if(blog.length>0 && blog[0].username == username){
+        flag=true
+    }
+    if(tmp.length> 0){
+      flag2=true
+    }
+    let plainT=""
+    res.render("blogHome.ejs",{
+      username : username,
+      blog : blog,
+      posts : posts,
+      flag : flag,
+      flag2 : flag2,
+      plainT : plainT
+    })
+  });
+
+  router.post("/blogCreatePage", async (req, res) => {
+    let username=req.body.username
+    res.render("createBlog.ejs",{
+      username : username,
+    })
+  });
+
+
+    ///////admin started
+
+  router.post("/adminLogin", async (req, res) => {
+    res.render("adminLogin.ejs",{
+
+    })
+  });
+
+
+
+  router.post("/adminHome", async (req, res) => {
+    adminID = req.body.adminID
+    password = req.body.password
+    let results;
+    results = await DB_auth.getPassforadmin(adminID)
+    let pass_db
+      if(results.length>0){
+        pass_db = results[0].PWD;
+      }
+      if (password === pass_db) {
+        res.render("adminHome.ejs", {
+          adminID : adminID
+        }
+        
+      );
+      
+      }
+      else {
+        return res.redirect("/adminLogin");
+      }
+  });
 
 
   module.exports = router;

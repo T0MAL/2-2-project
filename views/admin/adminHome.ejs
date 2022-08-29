@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+</head>
+
+<section id="search">
+    <!-- !SEARCH -->
+    <form class="search-bar" action="/" method="post">
+        <input class="search-bar" type="text" placeholder="Search for games" name="searchKey">
+        <input type="hidden" name="adminID" value=<%=adminID %>>
+        <button type="submit">Search</button>
+    </form>
+</section>
+
+<div>
+
+</div>
+
+<body>
+    <form action="/" method="post" style="text-align: center;">
+        <input type="hidden" name="adminID" value=<%=adminID %>>
+        <button type="submit" value="LogIn">Edit Games </button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News</title>
+</head>
+
+<header>
+    <h1 style="color: rgb(61, 39, 150); font-style: italic;">
+    </h1>
+    <section id="nav">
+        <div class="shundor">
+            <ul>
+                <li><a href="/">Home</a></li>
+                    <ul>
+                        <li>
+                            <form action="/categories" method="post">
+                                <input type="hidden" name="username" value=<%=username %>>
+                                <button type="submit" > Categories </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="/allBlogs" method="post">
+                                <input type="hidden" name="username" value=<%=username %>>
+                                <button type="submit" > Blogs </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="/news" method="post">
+                                <input type="hidden" name="username" value=<%=username %>>
+                                <button type="submit" > News </button>
+                            </form>
+                        </li>
+                        <li>
+                            <form action="/championship" method="get">
+                                <input type="hidden" name="username" value=<%=username %>>
+                                <button type="submit" > championships </button>
+                            </form>
+                        </li>
+                        
+                        
+                        
+
+                        
+
+                    </ul>
+                </li>
+                <li>
+                    <form action="/profile" method="post">
+                        <input type="hidden" name="username" value=<%=username %>>
+                        <button type="submit" > <%=username %> </button>
+                    </form>
+                <span style="float: right;">
+                    <li><a href="/">Logout</a></li>
+                </span>
+            </ul>
+        </div>
+    </section>
+
+    <section id="search">
+        <!-- !SEARCH -->
+        <form class="search-bar" action="/searchresults" method="post">
+            <input class="search-bar" type="text" placeholder="Search for anything" name="searchKey">
+            <input type="hidden" name="username" value=<%=username %>>
+            <button type="submit">Search</button>
+        </form>
+    </section>
+
+
+</header>
+
+<body>
+    
+</body>
+</html>

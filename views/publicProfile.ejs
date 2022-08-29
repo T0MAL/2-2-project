@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> <%= game[0].GAMENAME %>  </title>
+    <title> <%= user[0].USERNAME %> </title>
     <style>
 
 
@@ -171,7 +171,7 @@
                     <ul>
                         <li><a href="/">Categories</a></li>
                         <li><a href="/">Blogs</a></li>
-                        <li><a href="/">Devs</a></li>
+                        <li><a href="/login">Devs</a></li>
 
                     </ul>
                 </li>
@@ -199,49 +199,34 @@
 
 </header>
 <body>
-    <h1> <%= game[0].GAMENAME %> </h1>
-    <p> genre: <%= game[0].GAMEGENRE %></p>
-    <p> platform: <%= game[0].CONSOLE %> </p>
-    <p> developer: <%= game[0].DEV %></p>
+    <h1> <%= user[0].PLAYERNAME %> </h1>
+    <p> userid: <%= user[0].USERNAME %></p>
     <div>
-        <p> Released:  <%= game[0].PUBLISHINGDATE %> </p>
-        <span style="float: right;">
-            <li> rating: <%= game[0].RATING %></li>
-            <li> price : <%= game[0].GAMEPRICE %></li>
-        </span>
-        <% if(flag){ %>
-            <form action="/getGAME" method="post">
-                <input type="hidden" name="game" value=<%= game[0].GAMEID %> >
+        <p> <%= user[0].PLAYERBIO %> </p>
+    </div>
+    
+    <div style="float: left; width : 50%">
+        <h3> <a class="home" href="/">Owned Games</a> </h3>
+        <% for (let game of Games){ %>
+            
+            <form action="/gameProfile" method="post">
+                <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
                 <input type="hidden" name="username" value=<%=username %>>
                 <button type="submit">
-                    <p> GET THE GAME</p>
-                </button>
-            </form>
-          <% } else{ %>  
-         <% } %>
-        
-    </div>
-
-    <div>
-        <h1> DLCS</h1>
-        <div style="float: left; width : 50%">
-            <% for (let dlcc of dlcs){ %>
-                <li>
-                <form action="/getDLC" method="post">
-                    <input type="hidden" name="dlcID" value=<%=dlcc.DLCID %> >
-                    <input type="hidden" name="game" value=<%= game[0].GAMEID %> >
-                    <input type="hidden" name="username" value=<%=username %>>
-                    <button type="submit">
-                        <%= dlcc.DLCNAME %>
-                        <p> get DLC</p>
-                    </button>
+                    <div class="card">
+                        <img src="/img/12.PNG" style="width:100%">
+                        <h3><%= game.GAMENAME %></h3>
+                        <p class="price"><%= game.GAMEPRICE %></p>
+                        <p><%= game.GAMEGENRE %></p>
+                      </div>
                     
-                </form>
-                       
-                    </a>
-                </li>
-                <% } %>
-        </div>
+                </button>
+                
+            </form>
+                   
+                </a>
+            
+            <% } %>
     </div>
 </body>
 </html>

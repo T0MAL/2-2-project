@@ -29,6 +29,20 @@ async function getPostbyID(postID){
     return (await database.execute(sql, binds, database.options)).rows;
 }
 
+async function getBlogbyID(blogID){
+    const sql = `
+    SELECT* 
+    FROM 
+        BLOG 
+    WHERE BLOGID = :blogID
+    `;
+    const binds = {
+        blogID : blogID
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
 async function playeDetails(user_id){
     const sql = `
     SELECT*
@@ -116,6 +130,20 @@ async function searchKey(key){
     return (await database.execute(sql, binds, database.options)).rows;
 }
 
+async function searchBlog(key){
+    const sql = `
+    SELECT*
+    FROM 
+        BLOG
+    WHERE ( UPPER(BLOGTITLE) LIKE '%'||:key||'%')
+    `;
+    const binds = {
+        key : key
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
 
 async function getAllCategories() {
     const sql = `
@@ -172,12 +200,10 @@ async function getABlog(blogID) {
 
 async function getBlogPost(blogID) {
     const sql = `
-        SELECT*
-        FROM POST
-        WHERE POSTID = ANY (SELECT POSTID
-            FROM POST_UTIL
-            WHERE BLOGID = :blogID)
-        ORDER BY POSTDATE DESC
+        SELECT p.POSTID,p.TEXT,p.POSTDATE,pu.USERNAME
+        FROM POST p,POST_UTIL pu
+        WHERE pu.POSTID = p.POSTID AND pu.BLOGID = :blogID
+        ORDER BY p.POSTDATE DESC
         `;
     const binds = {
         blogID : blogID
@@ -194,6 +220,18 @@ async function getGamesByCategories(category){
         `;
     const binds={
         category : category
+    }
+    return (await database.execute(sql,binds,database.options)).rows;
+}
+
+async function getFreeGames(){
+    const sql = `
+        SELECT* 
+        FROM VIDEOGAMES
+        WHERE GAMEPRICE = 0
+        `;
+    const binds={
+
     }
     return (await database.execute(sql,binds,database.options)).rows;
 }
@@ -235,14 +273,27 @@ async function getAGAME(g_id) {
     return (await database.execute(sql, binds, database.options)).rows;
 }
 
-async function getDLC(g_id) {
+async function getDLC(gameID) {
     const sql = `
         SELECT *
-        FROM SYSTEM.DLC
-        WHERE GAMEID = :g_id
+        FROM DLC
+        WHERE GAMEID = :gameID
         `;
     const binds = {
-        g_id: g_id
+        gameID : gameID
+    }
+
+    return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function ownDLC(DLCID,username) {
+    const sql = `
+        INSERT INTO DLC_UTIL
+        VALUES(:DLCID,:username)
+        `;
+    const binds = {
+        DLCID : DLCID,
+        username : username
     }
 
     return (await database.execute(sql, binds, database.options)).rows;
@@ -354,6 +405,22 @@ async function createPost(postID,blogText){
    return (await database.execute(sql, binds, database.options));
 }
 
+async function createBlog(blogID,blogTitle,blogDes,username){
+    const sql = `
+    INSERT INTO BLOG
+    VALUES(:blogID,:blogTitle,:blogDes,:username)
+   `;
+
+   const binds={
+        blogID : blogID,
+        blogTitle : blogTitle,
+        blogDes : blogDes,
+        username : username
+   }
+
+   return (await database.execute(sql, binds, database.options));
+}
+
 async function addPost(postID,blogID,username){
     const sql = `
     INSERT INTO POST_UTIL
@@ -393,5 +460,9 @@ module.exports = {
     isBlogMember,
     addToBlog,
     getPostbyID,
-
+    getBlogbyID,
+    createBlog,
+    getFreeGames,
+    searchBlog,
+    ownDLC,
 };

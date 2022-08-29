@@ -74,14 +74,14 @@
     <div>
         <section id="search">
             <!-- !SEARCH -->
-            <form class="search-bar" action="/blogsearchresults" method="post">
-                <input class="search-bar" type="text" placeholder="Search for anything" name="searchKey">
+            <form class="search-bar" action="/blogSearch" method="post">
+                <input class="search-bar" type="text" placeholder="Search for anything" name="key">
                 <input type="hidden" name="username" value=<%=username %>>
                 <button type="submit">Search</button>
             </form>
         </section>
         <div style="float: left; width : 50%">
-            <% for (let blog of searchResult){ %>
+            <% for (let blog of blogSearchResult){ %>
                 <form action="/blogHome" method="post">
                     <input type="hidden" name="blogID" value=<%=blog.BLOGID %> >
                     <input type="hidden" name="username" value=<%=username %>>
@@ -96,7 +96,7 @@
         </div>
     </div>
     <div>
-        <form class="search-bar" action="/createBlog" method="post">
+        <form class="search-bar" action="/blogCreatePage" method="post">
             <input type="hidden" name="username" value=<%=username %>>
             <button type="submit">Create Blog</button>
         </form>

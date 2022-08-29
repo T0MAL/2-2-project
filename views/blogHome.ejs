@@ -34,7 +34,8 @@
         <div style="float: left; width : 50%">
             <% for (let post of posts){ %>
                 <form action="/publicProfile" method="post">
-                    <input type="hidden" name="username" value=<%=post.username %>>
+                    <input type="hidden" name="visiting" value=<%=post.USERNAME %>>
+                    <input type="hidden" name="username" value=<%=username %>>
                     <button type="submit">
                       <p> <%=post.USERNAME %> </p>  
                     </button>

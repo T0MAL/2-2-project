@@ -26,10 +26,12 @@ router.post("/home", async (req, res) => {
         pass_db = results[0].PWD;
       }
       let resultss = await DB.allgames()
+      freeGames = await DB.getFreeGames()
       if (password === pass_db) {
         res.render("homeafterlogin.ejs", {
           AllGames : resultss,
-          username : username
+          username : username,
+          freeGames : freeGames
         }
         
       );
