@@ -230,7 +230,7 @@ header ul li:hover ul li{
                     <h3> <a class="home" href="/">Games</a> </h3>
                     <% for (let game of AllGames){ %>
                         
-                        <form action="/login" method="post">
+                        <form action="/login" method="get">
                             <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
                             <button type="submit">
                                 <div class="card">

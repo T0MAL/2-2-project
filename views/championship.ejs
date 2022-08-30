@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Championship</title>
+
+    <style>
+    footer {
+        color : #888888;
+        border-top: 1px solid #eeeeee;
+        margin-top: 16px;
+        padding: 8px 0;
+    }
+    
+    header {
+        border-bottom: 1px solid #eeeeee;
+        margin-top: 16px;
+        margin-bottom: 48px;
+    }
+    
+    h1 {
+        font-size: 64px;
+        margin-bottom: 16px;
+    }
+    
+    
+    header a {
+        color: #888888;
+        margin-right: 16px;
+        text-decoration: none;  /* removes the underline in links */
+    }
+    
+    input.search-bar {
+        border: 1px solid #cccccc;
+        padding: 6px;
+        width: 300px
+    }
+    
+    button {
+        cursor : pointer;
+    }
+    
+    a.listed {
+        color: #946aec;
+        font-weight: bold;
+        padding: 6px;
+        text-decoration: none;
+        list-style: none;
+    }
+    a.home {
+        padding: 6px;
+        text-decoration: none;
+        list-style: none;
+    }
+    a.favourited {
+        color: #e60ad0;
+        padding: 6px;
+        text-decoration: none;
+    }
+    a.listed-character {
+        color: rgb(33, 116, 189);
+        font-weight: bold;
+        padding: 6px;
+        text-decoration: none;
+    }
+    
+    form.search-bar {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    form.search-bar button:hover {
+        background:#555555;
+    }
+    /* Clear floats */
+    form.search-bar::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    
+    header ul{
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    
+    }
+    
+    header ul li{
+      float: left;
+      width: 90px;
+      height: 30px;
+      background-color:#ffffff;
+      opacity: 0.99;
+      line-height: 30px;
+      text-align: center;
+    }
+    
+    header ul li a{
+      text-decoration: none;
+      color: #888888;
+      display: block;
+      color: rgb(48, 18, 88);
+    }
+    
+    header ul li a:hover{
+      background-color: #666666 ;
+      color:rgb(169, 228, 255);
+    }
+    header ul li ul li{
+      display: none;
+    }
+    header ul li:hover ul li{
+      display: block;
+      background-color:rgb(255, 255, 255);
+    }
+    
+    
+    .shundor{
+        margin-bottom: 20px;
+    }
+    #nav {
+        margin-bottom: 7ch;
+    }
+    .card {
+        display: flex;
+        justify-content: space-between;
+        text-align: center;
+    }
+    
+    .price {
+      color: grey;
+      font-size: 22px;
+    }
+    
+    .card button {
+      border: none;
+      outline: 0;
+      padding: 12px;
+      color: white;
+      background-color: #000;
+      text-align: center;
+      cursor: pointer;
+      width: 100%;
+      font-size: 18px;
+    }
+    
+    .card button:hover {
+      opacity: 0.7;
+    }
+    
+    .nav {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+    </style>
+    </head>
+    
+    <header>
+        <h1 style="color: rgb(61, 39, 150); font-style: italic;">
+        </h1>
+        <section id="nav">
+            <div class="shundor">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                        <ul>
+                            <li>
+                                <form action="/getCategories" method="post">
+                                    <input type="hidden" name="username" value=<%=username %>>
+                                    <button type="submit" > Categories </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="/allBlogs" method="post">
+                                    <input type="hidden" name="username" value=<%=username %>>
+                                    <button type="submit" > Blogs </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="/getNews" method="post">
+                                    <input type="hidden" name="username" value=<%=username %>>
+                                    <button type="submit" > News </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="/getChampionship" method="get">
+                                    <input type="hidden" name="username" value=<%=username %>>
+                                    <button type="submit" > championships </button>
+                                </form>
+                            </li>
+                            
+                            
+                            
+    
+                            
+    
+                        </ul>
+                    </li>
+                    <li>
+                        <form action="/profile" method="post">
+                            <input type="hidden" name="username" value=<%=username %>>
+                            <button type="submit" > <%=username %> </button>
+                        </form>
+                    <span style="float: right;">
+                        <li><a href="/">Logout</a></li>
+                    </span>
+                </ul>
+            </div>
+        </section>
+    
+        <section id="search">
+            <!-- !SEARCH -->
+            <form class="search-bar" action="/searchresults" method="post">
+                <input class="search-bar" type="text" placeholder="Search for anything" name="searchKey">
+                <input type="hidden" name="username" value=<%=username %>>
+                <button type="submit">Search</button>
+            </form>
+        </section>
+    
+    
+    </header>
+<body>
+    <div>
+        <div class="main-content">
+            <section id="homepage-top-animes" style="margin-bottom: 15%;">
+                <div style="float: left; width : 50%">
+                    <h3> <a class="home" href="#">contests</a> </h3>
+                    <% for (let con of contest){ %>
+                        <h1>
+                            <%= con.CONTNAME %>
+                            <form action="/gameProfile" method="post">
+                                <input type="hidden" name="gameID" value=<%=con.gID %> >
+                                <input type="hidden" name="username" value=<%=username %>>
+                                <button type="submit">
+                                    <div class="card">
+                                        <p> <%= con.GAME %>  </p>
+                                    </div>
+                                </button>
+                            </form>
+                        </h1>
+                        <form action="/publicProfile" method="post">
+                            <input type="hidden" name="visiting" value=<%=con.WIN %>>
+                            <input type="hidden" name="username" value=<%=username %>>
+                            <button type="submit">
+                              <p> Winner:  <%=con.WIN %> </p>  
+                            </button>
+                        </form>
+
+                        <form action="/publicProfile" method="post">
+                            <input type="hidden" name="visiting" value=<%=con.RUN %>>
+                            <input type="hidden" name="username" value=<%=username %>>
+                            <button type="submit">
+                              <p> Runnersup: <%=con.RUN %> </p>  
+                            </button>
+                        </form>
+                        <p> Venue: <%= con.VEN %> </p>
+                            </a>
+                        <% } %>
+                </div>
+    </div>
+</body>
+</html>

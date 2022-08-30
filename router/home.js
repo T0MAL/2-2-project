@@ -85,18 +85,22 @@ router.get("/",async (req, res) => {
   router.post("/gameProfile",async(req,res)=>{
     let gameID=req.body.gameID
     let username=req.body.username
-    let dlcs=await DB.getDLC(gameID)
+    let ownedDlcs=await DB.getOwnedDLC(username,gameID)
+    let notOwnedDlcs= await DB.getNotOwnedDLC(username,gameID)
     let game = await DB.getAGAME(gameID)
     let gg= await DB.isMyGames(username,gameID)
     let flag=true
     if(gg.length>0){
         flag=false
     }
-   console.log(flag)
+    console.log(username)
+    console.log(gameID)
+   console.log(notOwnedDlcs)
     res.render("gameProfile.ejs",{
       game: game,
       username : username,
-      dlcs : dlcs,
+      ownedDlcs : ownedDlcs,
+      notOwnedDlcs : notOwnedDlcs,
       flag : flag
     })
   });
@@ -119,7 +123,8 @@ router.get("/",async (req, res) => {
     let username=req.body.username
   //  console.log(username)
     let gameID = req.body.game
-    let dlcs=await DB.getDLC(gameID)
+    let ownedDlcs=await DB.getOwnedDLC(username,gameID)
+    let notOwnedDlcs= await DB.getNotOwnedDLC(username,gameID)
     let game = await DB.getAGAME(gameID)
    // console.log(dlcs)
     //write db code to buy game using condition
@@ -129,10 +134,12 @@ router.get("/",async (req, res) => {
     if(gg.length>0){
         flag=false
     }
+    console.log(notOwnedDlcs)
     res.render("gameProfile.ejs",{
       game: game,
       username : username,
-      dlcs : dlcs,
+      ownedDlcs : ownedDlcs,
+      notOwnedDlcs : notOwnedDlcs,
       flag : flag
     })
   });
@@ -141,21 +148,25 @@ router.get("/",async (req, res) => {
     let username=req.body.username
   //  console.log(username)
     let gameID = req.body.game
-    let dlcs=await DB.getDLC(gameID)
+    
     let game = await DB.getAGAME(gameID)
    // console.log(dlcs)
     //write db code to buy game using condition
     let dlcID = req.body.dlcID
-    await DB.ownDLC(dlcID,username)
+    await DB.buyDLC(username,dlcID)
     let gg= await DB.isMyGames(username,gameID)
     let flag=true
     if(gg.length>0){
         flag=false
     }
+    let ownedDlcs=await DB.getOwnedDLC(username,gameID)
+    let notOwnedDlcs= await DB.getNotOwnedDLC(username,gameID)
+    console.log(notOwnedDlcs)
     res.render("gameProfile.ejs",{
       game: game,
       username : username,
-      dlcs : dlcs,
+      ownedDlcs : ownedDlcs,
+      notOwnedDlcs : notOwnedDlcs,
       flag : flag
     })
   });
@@ -230,19 +241,6 @@ router.get("/",async (req, res) => {
   //   })
   // });
 
-  router.post("/getDLC", async (req, res) => {
-    let username=req.body.username
-    let dlc=req.body.dlc
-    let gameID = req.body.game
-    let dlcs=await DB.getDLC(gameID)
-    let game = await DB.getAGAME(gameID)
-    // write db code here with condition
-    res.render("gameProfile.ejs",{
-      game: game,
-      username : username,
-      dlcs : dlcs
-    })
-  });
 
   router.post("/searchresults", async (req, res) => {
     let username=req.body.username
@@ -431,6 +429,25 @@ router.get("/",async (req, res) => {
     })
   });
 
+
+  router.post("/getNews", async (req, res) => {
+    let username=req.body.username
+    let news =await DB.getNews()
+    res.render("news.ejs",{
+      username : username,
+      NEWS : news,
+    })
+  });
+
+  router.post("/getChampionship", async (req, res) => {
+    let username=req.body.username
+    let contest =await DB.getChampionship()
+
+    res.render("championship.ejs",{
+      username : username,
+      contest : contest
+    })
+  });
 
     ///////admin started
 

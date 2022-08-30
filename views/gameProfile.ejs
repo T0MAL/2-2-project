@@ -223,9 +223,9 @@
     </div>
 
     <div>
-        <h1> DLCS</h1>
+        <h1>Not Owned DLCS</h1>
         <div style="float: left; width : 50%">
-            <% for (let dlcc of dlcs){ %>
+            <% for (let dlcc of notOwnedDlcs){ %>
                 <li>
                 <form action="/getDLC" method="post">
                     <input type="hidden" name="dlcID" value=<%=dlcc.DLCID %> >
@@ -237,6 +237,19 @@
                     </button>
                     
                 </form>
+                       
+                    </a>
+                </li>
+                <% } %>
+        </div>
+    </div>
+
+    <div>
+        <h1>Owned DLCS</h1>
+        <div style="float: left; width : 50%">
+            <% for (let dlcc of ownedDlcs){ %>
+                <li>
+                <h1><%= dlcc.DLCNAME %></h1>
                        
                     </a>
                 </li>

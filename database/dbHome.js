@@ -377,6 +377,34 @@ async function isBlogMember(username, blogID){
    return (await database.execute(sql, binds, database.options)).rows;
 }
 
+async function getNews(){
+    const sql = `
+    SELECT* 
+    FROM NEWS
+   `;
+
+   const binds={
+    
+   }
+
+   return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function getChampionship(){
+    const sql = `
+    SELECT C.CONTNAME AS CONT,C.VENUE AS VEN,C.WINNER AS WIN,C.RUNNERSUP AS RUN,G.GAMENAME AS GAME,G.GAMEID as gId
+    FROM CHAMPIONSHIPS C, VIDEOGAMES G
+    WHERE C.GAMEID = G.GAMEID
+    ORDER BY C.ENDDATE DESC
+   `;
+
+   const binds={
+    
+   }
+
+   return (await database.execute(sql, binds, database.options)).rows;
+}
+
 async function addToBlog(username, blodID){
     const sql = `
     INSERT INTO BLOGMEMBERS
@@ -436,6 +464,65 @@ async function addPost(postID,blogID,username){
    return (await database.execute(sql, binds, database.options));
 }
 
+async function getOwnedDLC(username,gameID){
+    const sql = `
+    SELECT D.DLCNAME as DLCNAME,D.DLCID as DLCID
+    FROM DLC D,DLC_UTIL DU
+    WHERE D.GAMEID = :gameID AND DU.USERNAME = :username AND D.DLCID = DU.DLCID
+   `;
+
+   const binds={
+    username : username,
+    gameID : gameID,
+   }
+
+   return (await database.execute(sql, binds, database.options)).rows;
+}
+async function getNotOwnedDLC(username,gameID){
+    const sql = `
+    SELECT D.DLCNAME as DLCNAME,D.DLCID as DLCID
+    FROM DLC D,DLC_UTIL DU
+    WHERE D.GAMEID = :gameID AND D.DLCID = DU.DLCID AND :username NOT IN (SELECT USERNAME FROM DLC_UTIL WHERE DLCID = D.DLCID ) 
+   `;
+
+   const binds={
+    username : username,
+    gameID : gameID
+   }
+
+   return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function getUserAchiv(username){
+    const sql = `
+    SELECT*
+    FROM CHAMPIONSHIPS
+    WHERE WINNER = :username OR RUNNERSUP = :username
+   `;
+
+   const binds={
+    username : username,
+   }
+
+   return (await database.execute(sql, binds, database.options)).rows;
+}
+
+async function buyDLC(username,dlcID){
+    const sql = `
+    INSERT INTO DLC_UTIL
+    VALUES(:dlcID,:username)
+   `;
+
+   const binds={
+        username : username,
+        dlcID : dlcID,
+   }
+
+   return (await database.execute(sql, binds, database.options));
+}
+
+
+
 module.exports = {
     addPost,
     createPost,
@@ -465,4 +552,10 @@ module.exports = {
     getFreeGames,
     searchBlog,
     ownDLC,
+    getNews,
+    getChampionship,
+    getOwnedDLC,
+    getNotOwnedDLC,
+    buyDLC,
+    getUserAchiv,
 };
