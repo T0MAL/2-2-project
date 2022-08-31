@@ -170,18 +170,21 @@ header ul li:hover ul li{
     <section id="nav">
         <div class="shundor">
             <ul>
-                <li><a href="/">Home</a></li>
+                <li><form action="/home2" method="post">
+                    <input type="hidden" name="username" value=<%=username %>>
+                    <button type="submit" > Home </button>
+                </form></li>
                     <ul>
                         <li>
-                            <form action="/categories" method="post">
+                            <form action="/everyGames" method="post">
                                 <input type="hidden" name="username" value=<%=username %>>
-                                <button type="submit" > Categories </button>
+                                <button type="submit" > Games </button>
                             </form>
                         </li>
                         <li>
                             <form action="/allBlogs" method="post">
                                 <input type="hidden" name="username" value=<%=username %>>
-                                <button type="submit" > Blogs </button>
+                                <button type="submit" > Blog </button>
                             </form>
                         </li>
                         <li>
@@ -193,7 +196,7 @@ header ul li:hover ul li{
                         <li>
                             <form action="/getChampionship" method="post">
                                 <input type="hidden" name="username" value=<%=username %>>
-                                <button type="submit" > championships </button>
+                                <button type="submit" > Championships </button>
                             </form>
                         </li>
                         
@@ -229,11 +232,30 @@ header ul li:hover ul li{
 </header>
 
 <body>
-    
+    <div class="main-content">
+        <section id="homepage-top-animes" style="margin-bottom: 15%;">
+            <div>
+                <h3> <a class="home" href="#">Recently Released</a> </h3>
+                <% for (let game of recent){ %>
+                    <form action="/gameProfile" method="post">
+                        <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
+                        <input type="hidden" name="username" value=<%=username %>>
+                        <button type="submit">
+                            <div class="card">
+                                <img src="/img/12.PNG" style="width:100%">
+                                <h3><%= game.GAMENAME %></h3>
+                                <p class="price"><%= game.GAMEPRICE %></p>
+                                <p><%= game.GAMEGENRE %></p>
+                            </div>
+                        </button>
+                    </form>   
+                        </a>
+                    <% } %>
+            </div>
     <div class="main-content">
             <section id="homepage-top-animes" style="margin-bottom: 15%;">
-                <div style="float: left; width : 50%">
-                    <h3> <a class="home" href="/">Free Games</a> </h3>
+                <div>
+                    <h3> <a class="home" href="#">Free Games</a> </h3>
                     <% for (let game of freeGames){ %>
                         <form action="/gameProfile" method="post">
                             <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
@@ -253,9 +275,9 @@ header ul li:hover ul li{
 
                 <div class="main-content">
                     <section id="homepage-top-animes" style="margin-bottom: 15%;">
-                        <div style="float: left; width : 50%">
-                            <h3> <a class="home" href="/">ALl Games</a> </h3>
-                            <% for (let game of AllGames){ %>
+                        <div>
+                            <h3> <a class="home" href="#">Action Games</a> </h3>
+                            <% for (let game of actionGames){ %>
                                 <form action="/gameProfile" method="post">
                                     <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
                                     <input type="hidden" name="username" value=<%=username %>>
@@ -271,6 +293,47 @@ header ul li:hover ul li{
                                     </a>
                                 <% } %>
                         </div>
+                <div class="main-content">
+                    <section id="homepage-top-animes" style="margin-bottom: 15%;">
+                        <div style="float: left; width : 50%">
+                            <h3> <a class="home" href="/">Sports Games</a> </h3>
+                            <% for (let game of sports){ %>
+                                <form action="/gameProfile" method="post">
+                                    <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
+                                    <input type="hidden" name="username" value=<%=username %>>
+                                    <button type="submit">
+                                        <div class="card">
+                                            <img src="/img/12.PNG" style="width:100%">
+                                            <h3><%= game.GAMENAME %></h3>
+                                            <p class="price"><%= game.GAMEPRICE %></p>
+                                            <p><%= game.GAMEGENRE %></p>
+                                        </div>
+                                    </button>
+                                </form>   
+                                    </a>
+                                <% } %>
+                        </div>
+
+                        <div class="main-content">
+                            <section id="homepage-top-animes" style="margin-bottom: 15%;">
+                                <div style="float: left; width : 50%">
+                                    <h3> <a class="home" href="/">Adventure Games</a> </h3>
+                                    <% for (let game of adventureGames){ %>
+                                        <form action="/gameProfile" method="post">
+                                            <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
+                                            <input type="hidden" name="username" value=<%=username %>>
+                                            <button type="submit">
+                                                <div class="card">
+                                                    <img src="/img/12.PNG" style="width:100%">
+                                                    <h3><%= game.GAMENAME %></h3>
+                                                    <p class="price"><%= game.GAMEPRICE %></p>
+                                                    <p><%= game.GAMEGENRE %></p>
+                                                </div>
+                                            </button>
+                                        </form>   
+                                            </a>
+                                        <% } %>
+                                </div>
 
 
                

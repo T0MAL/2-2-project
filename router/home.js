@@ -85,6 +85,7 @@ router.get("/",async (req, res) => {
   router.post("/gameProfile",async(req,res)=>{
     let gameID=req.body.gameID
     let username=req.body.username
+    await DB.adView(gameID)
     let ownedDlcs=await DB.getOwnedDLC(username,gameID)
     let notOwnedDlcs= await DB.getNotOwnedDLC(username,gameID)
     let game = await DB.getAGAME(gameID)
@@ -451,35 +452,16 @@ router.get("/",async (req, res) => {
 
     ///////admin started
 
-  router.post("/adminLogin", async (req, res) => {
-    res.render("adminLogin.ejs",{
-
+  router.post("/everyGames", async (req, res) => {
+    let username=req.body.username
+    let resultss = await DB.allgames()
+    res.render("allGames.ejs",{
+      username : username,
+        AllGames : resultss
     })
   });
 
 
-
-  router.post("/adminHome", async (req, res) => {
-    adminID = req.body.adminID
-    password = req.body.password
-    let results;
-    results = await DB_auth.getPassforadmin(adminID)
-    let pass_db
-      if(results.length>0){
-        pass_db = results[0].PWD;
-      }
-      if (password === pass_db) {
-        res.render("adminHome.ejs", {
-          adminID : adminID
-        }
-        
-      );
-      
-      }
-      else {
-        return res.redirect("/adminLogin");
-      }
-  });
 
 
   module.exports = router;

@@ -12,6 +12,7 @@ const morgan = require('morgan');
 const router = require('./router/home');
 const signup_router = require('./router/signup');
 const login_router = require('./router/login');
+const dev_router = require('./router/dev');
 
 
 
@@ -36,6 +37,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/', router);
 app.use('/', signup_router);
 app.use('/', login_router);
+app.use('/', dev_router);
 // using error handling middlware
 //app.use(errorHandling.notFound);
 

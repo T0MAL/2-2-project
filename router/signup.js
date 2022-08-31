@@ -17,12 +17,4 @@ router.get("/signup", (req, res) => {
 
 
 
-  router.get("/home",async (req, res) => {
-    results = await DB.allgames()
-    //console.log(results);
-  res.render("homeafterlogin.ejs", {
-    AllGames : results
-  })
-});
-
   module.exports = router;

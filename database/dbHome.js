@@ -315,22 +315,6 @@ async function getUserRecom(user_id){
 }
 
 
-
-async function addToWishList(user_id, game_id){
-    const sql = `
-    INSERT INTO SYSTEM.WISHLIST
-    VALUES(:user_id,:game_id)
-   `;
-
-   const binds={
-    user_id : user_id,
-    game_id : game_id
-   }
-
-   return (await database.execute(sql, binds, database.options)).rows;
-}
-
-
 async function editproiflewithoutpass(username,newName,newEmail,newBio){
     let sql = `
     UPDATE players
@@ -392,7 +376,7 @@ async function getNews(){
 
 async function getChampionship(){
     const sql = `
-    SELECT C.CONTNAME AS CONT,C.VENUE AS VEN,C.WINNER AS WIN,C.RUNNERSUP AS RUN,G.GAMENAME AS GAME,G.GAMEID as gId
+    SELECT C.CONTNAME AS CONT,C.VENUE AS VEN,C.WINNER AS WIN,C.RUNNERSUP AS RUN,G.GAMENAME AS GAME,G.GAMEID as gID
     FROM CHAMPIONSHIPS C, VIDEOGAMES G
     WHERE C.GAMEID = G.GAMEID
     ORDER BY C.ENDDATE DESC
@@ -521,6 +505,48 @@ async function buyDLC(username,dlcID){
    return (await database.execute(sql, binds, database.options));
 }
 
+async function buyDLC(username,dlcID){
+    const sql = `
+    INSERT INTO DLC_UTIL
+    VALUES(:dlcID,:username)
+   `;
+
+   const binds={
+        username : username,
+        dlcID : dlcID,
+   }
+
+   return (await database.execute(sql, binds, database.options));
+}
+
+async function adView(gameID){
+    const sql = `
+    EXECUTE addView ':gameID'
+   `;
+   const binds={
+        gameID : gameID
+   }
+
+   return (await database.execute(sql, binds, database.options));
+}
+
+async function recentlyReleased(){
+    const sql = `
+    SELECT*
+    FROM 
+        VIDEOGAMES
+    WHERE 
+    PUBLISHINGDATE > (SYSDATE-7)
+   `;
+
+   const binds={
+   }
+
+   return (await database.execute(sql, binds, database.options)).rows;
+}
+
+
+
 
 
 module.exports = {
@@ -558,4 +584,6 @@ module.exports = {
     getNotOwnedDLC,
     buyDLC,
     getUserAchiv,
+    adView,
+    recentlyReleased
 };

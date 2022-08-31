@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>News</title>
-    <style>
+    <title>All Games</title><style>
 
 
 
@@ -228,21 +227,25 @@
         
         </header>
 <body>
-    <div>
-            <div class="main-content">
-                <section id="homepage-top-animes" style="margin-bottom: 15%;">
-                    <div style="float: left; width : 50%">
-                        <h3> <a class="home" href="/">All News</a> </h3>
-                        <% for (let gg of NEWS){ %>
-                            <p><%= gg.NEWSDATE%></p>
-                            <div>
-                            <p><%= gg.TEXT%></p>
-
+    <div class="main-content">
+        <section id="homepage-top-animes" style="margin-bottom: 15%;">
+            <div style="float: left; width : 50%">
+                <h3> <a class="home" href="#">ALL Games</a> </h3>
+                <% for (let game of AllGames){ %>
+                    <form action="/gameProfile" method="post">
+                        <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
+                        <input type="hidden" name="username" value=<%=username %>>
+                        <button type="submit">
+                            <div class="card">
+                                <img src="/img/12.PNG" style="width:100%">
+                                <h3><%= game.GAMENAME %></h3>
+                                <p class="price"><%= game.GAMEPRICE %></p>
+                                <p><%= game.GAMEGENRE %></p>
                             </div>
-                        
-                                </a>
-                            <% } %>
-                    </div>
-    </div>
+                        </button>
+                    </form>   
+                        </a>
+                    <% } %>
+            </div>
 </body>
 </html>

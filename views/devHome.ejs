@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+</head>
+
+<header>
+    <form action="adminHome2" method="post" style="text-align: center;">
+        <button type="submit" value="LogIn">Home </button>
+    </form>
+    <form action="/" method="get" style="text-align: center;">
+        <button type="submit" value="LogIn">Logout </button>
+    </form>
+</header>
+
+<div>
+
+</div>
+
+<body>
+    <form action="/addGame" method="post" style="text-align: center;">
+        <input type="hidden" name="devID" value=<%=devID %>>
+        <button type="submit" value="LogIn">Add a Game </button>
+    </form>
+
+    <div style="float: left; width : 50%">
+        <h3> <a class="home" href="#">Games</a> </h3>
+        <% for (let game of devGames){ %>
+            <form action="/devGameEdit" method="post">
+                <input type="hidden" name="gameID" value=<%=game.GAMEID %> >
+                <input type="hidden" name="devID" value=<%=devID %>>
+                <button type="submit">
+                    <div class="card">
+                        <h3><%= game.GAMENAME %></h3>
+                    </div>
+                </button>
+            </form>   
+                </a>
+            <% } %>
+    </div>
+
+</body>
+</html>

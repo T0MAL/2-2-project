@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Games</title>
+</head>
+<body>
+    
+    <div style="align-self:center; margin-right:300px;">
+        <form action="/editedGame" method="post" style="text-align: center;">
+            <input type="hidden" name="devID" value=<%=devID %>>
+            <input type="hidden" name="gameID" value=<%=gameID %>>
+            <div class="input-field">
+                <p>
+                    Game Name:
+                </p>
+                <input type="text" name="gameNewName"  value="<%= game[0].GAMENAME %>">
+            </div>
+            
+            <div class="input-field">
+                <p>
+                    PRICE:
+                </p>
+                <input type="text" name="newPrice"  value="<%= game[0].GAMEPRICE %>">
+            </div>
+            <div class="input-field">
+                <p>
+                    Platform:
+                </p>
+                <input type="text" name="newPlatform" value="<%= game[0].CONSOLE %>">
+            </div>
+            <button type="submit" value="Register">
+                <p> Save </p>    
+            </button>
+        </form>
+    </div>
+</body>
+</html>

@@ -159,45 +159,74 @@
             padding: 0;
         }
         </style>
-</head>
-
-<header>
-    <h1 style="color: rgb(61, 39, 150); font-style: italic;">
-    </h1>
-    <section id="nav">
-        <div class="shundor">
-            <ul>
-                <li><a href="/">Home</a></li>
+        </head>
+        
+        <header>
+            <h1 style="color: rgb(61, 39, 150); font-style: italic;">
+            </h1>
+            <section id="nav">
+                <div class="shundor">
                     <ul>
-                        <li><a href="/">Categories</a></li>
-                        <li><a href="/">Blogs</a></li>
-                        <li><a href="/">Devs</a></li>
-
+                        <li><form action="/home2" method="post">
+                            <input type="hidden" name="username" value=<%=username %>>
+                            <button type="submit" > Home </button>
+                        </form></li>
+                            <ul>
+                                <li>
+                                    <form action="/everyGames" method="post">
+                                        <input type="hidden" name="username" value=<%=username %>>
+                                        <button type="submit" > Games </button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="/allBlogs" method="post">
+                                        <input type="hidden" name="username" value=<%=username %>>
+                                        <button type="submit" > Blog </button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="/getNews" method="post">
+                                        <input type="hidden" name="username" value=<%=username %>>
+                                        <button type="submit" > News </button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form action="/getChampionship" method="post">
+                                        <input type="hidden" name="username" value=<%=username %>>
+                                        <button type="submit" > Championships </button>
+                                    </form>
+                                </li>
+                                
+                                
+                                
+        
+                                
+        
+                            </ul>
+                        </li>
+                        <li>
+                            <form action="/profile" method="post">
+                                <input type="hidden" name="username" value=<%=username %>>
+                                <button type="submit" > <%=username %> </button>
+                            </form>
+                        <span style="float: right;">
+                            <li><a href="/">Logout</a></li>
+                        </span>
                     </ul>
-                </li>
-                <li>
-                    <form action="/profile" method="post">
-                        <input type="hidden" name="username" value=<%=username %>>
-                        <button type="submit" > <%=username %> </button>
-                    </form>
-                <span style="float: right;">
-                    <li><a href="/">Logout</a></li>
-                </span>
-            </ul>
-        </div>
-    </section>
-
-    <section id="search">
-        <!-- !SEARCH -->
-        <form class="search-bar" action="/searchresults" method="post">
-            <input class="search-bar" type="text" placeholder="Search for anything" name="searchKey">
-            <input type="hidden" name="username" value=<%=username %>>
-            <button type="submit">Search</button>
-        </form>
-    </section>
-
-
-</header>
+                </div>
+            </section>
+        
+            <section id="search">
+                <!-- !SEARCH -->
+                <form class="search-bar" action="/searchresults" method="post">
+                    <input class="search-bar" type="text" placeholder="Search for anything" name="searchKey">
+                    <input type="hidden" name="username" value=<%=username %>>
+                    <button type="submit">Search</button>
+                </form>
+            </section>
+        
+        
+        </header>
 <body>
     <h1> <%= game[0].GAMENAME %> </h1>
     <p> genre: <%= game[0].GAMEGENRE %></p>
@@ -223,8 +252,8 @@
     </div>
 
     <div>
-        <h1>Not Owned DLCS</h1>
-        <div style="float: left; width : 50%">
+        <h2>Not Owned DLCS</h2>
+        <div >
             <% for (let dlcc of notOwnedDlcs){ %>
                 <li>
                 <form action="/getDLC" method="post">
@@ -245,11 +274,17 @@
     </div>
 
     <div>
-        <h1>Owned DLCS</h1>
-        <div style="float: left; width : 50%">
+        <h2>Owned DLCS</h2>
+        <div >
             <% for (let dlcc of ownedDlcs){ %>
                 <li>
-                <h1><%= dlcc.DLCNAME %></h1>
+                <form>
+                    <button type="button" disabled>
+                        <%= dlcc.DLCNAME %>
+                        <p> get DLC</p>
+                    </button>
+                    
+                </form>
                        
                     </a>
                 </li>
